@@ -57,7 +57,7 @@
             --shadow-xs:    0 2px 4px rgba(0,0,0,0.04);
             --shadow-sm:    0 2px 4px rgba(0,0,0,0.1);
             --shadow-md:    0 4px 10px rgba(0,0,0,0.1);
-            --shadow-card:  0 8px 20px rgba(0,0,0,0.06);
+            --shadow-card:  0 15px 40px rgba(0, 0, 0, 0.18), 0 5px 15px rgba(0, 0, 0, 0.08);
             --shadow-modal: 0 10px 30px rgba(0,0,0,0.2);
             --shadow-primary: 0 4px 10px var(--color-primary-shadow);
 
@@ -434,18 +434,14 @@
             background: transparent;
         }
         
-        /* Kutu Kesin Olarak Uzatıldı (65vh ve min-height eklendi) */
         #widgetLayoutPanel .wlp-box {
             position: relative;
             z-index: 1;
             background: var(--color-bg-card);
-            border-radius: 24px;
-            padding: 35px 40px;
+            border-radius: var(--radius-xl);
+            padding: 30px;
             width: 90%;
-            max-width: 600px;
-            height: 65vh; /* Ekranın yüzde 65'ini zorunlu kaplar */
-            min-height: 550px;
-            max-height: 750px;
+            max-width: 650px; /* Daha derli toplu yatay görünüm */
             display: flex;
             flex-direction: column;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
@@ -455,81 +451,78 @@
         }
         #widgetLayoutPanel.show .wlp-box { transform: translateY(0); }
         
-        .wlp-title { font-size: 22px; font-weight: 800; color: var(--color-text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
-        .wlp-title i { color: var(--color-primary); font-size: 26px; }
-        .wlp-subtitle { font-size: 14px; color: var(--color-text-muted); font-weight: 600; margin-bottom: 25px; line-height: 1.4; flex-shrink: 0;}
+        .wlp-title { font-size: 20px; font-weight: 800; color: var(--color-text-main); margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+        .wlp-title i { color: var(--color-primary); font-size: 24px; }
+        .wlp-subtitle { font-size: 13px; color: var(--color-text-muted); font-weight: 600; margin-bottom: 25px; line-height: 1.4; flex-shrink: 0;}
         
-        /* İçerik Boşluğa Göre Esnemeye Zorlandı */
         .wlp-sides { 
-            display: grid; 
-            grid-template-columns: 1fr 30px 1fr; 
+            display: flex; 
             gap: 20px; 
             align-items: stretch; 
-            flex: 1; /* Uzayan boşluğu tamamen doldurur */
-            min-height: 0;
         }
         
-        /* Kolonlar içindeki butonları düzenlemek için flex'e çevrildi */
-        .wlp-sides > div:not(.wlp-divider-col) {
+        .wlp-sides > div.wlp-col {
+            flex: 1;
+            background: var(--color-bg-input);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 14px; /* Butonlar arası ferah boşluk */
+            gap: 10px;
         }
         
         .wlp-side-label { 
-            font-size: 13px; font-weight: 800; color: var(--color-text-secondary); text-transform: uppercase; 
-            letter-spacing: 1px; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; 
-            justify-content: center; background: var(--color-bg-input); padding: 10px; 
-            border-radius: 12px; border: 1px dashed var(--color-border-strong); flex-shrink: 0;
+            font-size: 13px; font-weight: 800; color: var(--color-primary); text-transform: uppercase; 
+            letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; 
+            justify-content: center; padding-bottom: 10px; border-bottom: 2px dashed var(--color-primary-border);
         }
-        .wlp-side-label i { color: var(--color-primary); }
         
         .wlp-option {
             display: flex; align-items: center; gap: 10px;
-            padding: 9px 14px;
-            border-radius: 10px;
-            border: 2px solid var(--color-border-medium);
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
             background: var(--color-bg-card);
-            cursor: pointer; transition: all 0.15s ease;
+            cursor: pointer; transition: all 0.2s ease;
             font-size: 13px; font-weight: 700; color: var(--color-text-secondary);
             user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
         
         .wlp-option:hover { 
             border-color: var(--color-primary-border); 
-            background: var(--color-primary-lighter); 
-            color: var(--color-primary); 
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.08);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.1);
         }
         
         .wlp-option.wlp-active { 
             border-color: var(--color-primary); 
-            background: linear-gradient(135deg, var(--color-primary-lighter) 0%, #ffffff 100%);
+            background: var(--color-primary-lighter);
             color: var(--color-primary); 
             box-shadow: 0 4px 15px rgba(0, 123, 255, 0.15);
         }
         
         .wlp-option.wlp-active .wlp-check { opacity: 1; transform: scale(1); }
-        .wlp-option.wlp-disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; background: #f9f9f9; }
+        .wlp-option.wlp-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; filter: grayscale(100%); }
         
         .wlp-check { 
             margin-left: auto; color: #fff; background: var(--color-primary); 
-            width: 24px; height: 24px; border-radius: 50%; 
+            width: 22px; height: 22px; border-radius: 50%; 
             display: flex; justify-content: center; align-items: center;
             opacity: 0; transform: scale(0.5); transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            font-size: 13px; box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
+            font-size: 11px; box-shadow: 0 2px 5px rgba(0, 123, 255, 0.4);
         }
         
         .wlp-divider-col { 
             display: flex; align-items: center; justify-content: center; 
-            color: var(--color-border-strong); font-size: 22px; margin-top: 45px; flex-shrink: 0;
+            color: var(--color-border-strong); font-size: 20px; padding: 0;
         }
         
         .wlp-footer { 
-            display: flex; justify-content: flex-end; gap: 15px; 
+            display: flex; justify-content: flex-end; gap: 12px; 
             margin-top: 25px; 
-            border-top: 1px dashed var(--color-border-medium); padding-top: 25px; flex-shrink: 0;
+            padding-top: 20px; border-top: 1px solid var(--color-border);
         }
 
         /* --- ORTAK MODÜL (BALON) TASARIMI --- */
@@ -2600,9 +2593,11 @@
         /* --- SAĞ/SOL REKLAM YER TUTUCULARI (PLACEHOLDER) --- */
         .ad-space-left, .ad-space-right {
             position: fixed;
-            top: 110px;
-            width: 160px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10vw;
             height: 600px;
+            max-height: 80vh;
             background-color: #f8f9fa;
             border: 2px dashed #ced4da;
             border-radius: 12px;
@@ -4526,6 +4521,26 @@
             });
         };
 
+        // Detaylı modalda Tümü / Tamamlanan / Kalanlar ana filtresi için
+        window.switchCalDistFilter = function(targetFilter) {
+            const filters = ['all', 'comp', 'uncomp'];
+            filters.forEach(f => {
+                const btn = document.getElementById('calDistFilterBtn_' + f);
+                const container = document.getElementById('calDistWrap_' + f);
+                if (btn && container) {
+                    if (f === targetFilter) {
+                        btn.style.background = 'var(--color-primary)';
+                        btn.style.color = '#fff';
+                        container.style.display = 'block';
+                    } else {
+                        btn.style.background = 'transparent';
+                        btn.style.color = 'var(--color-text-muted)';
+                        container.style.display = 'none';
+                    }
+                }
+            });
+        };
+
         function showCalDaySummary(dk) {
             const [y, m, d] = dk.split('-').map(Number);
             const dateObj = new Date(y, m-1, d);
@@ -4606,11 +4621,13 @@
             let totalQ = 0, completedQ = 0;
             let totalTasksCount = tasks.length, completedTasksCount = 0;
             let totalVideos = 0, watchedVideos = 0;
-            
-            let stats = {
-                time: { all: {}, tyt: {}, ayt: {} },
-                q: { all: {}, tyt: {}, ayt: {} }
+
+            let distStats = {
+                all: { time: { all: {}, tyt: {}, ayt: {} }, q: { all: {}, tyt: {}, ayt: {} } },
+                completed: { time: { all: {}, tyt: {}, ayt: {} }, q: { all: {}, tyt: {}, ayt: {} } },
+                uncompleted: { time: { all: {}, tyt: {}, ayt: {} }, q: { all: {}, tyt: {}, ayt: {} } }
             };
+            
             let playlistMap = {};
 
             tasks.forEach(task => {
@@ -4619,18 +4636,26 @@
                 const subj = task.subject || 'Diğer';
                 const exType = (task.examType || task.exam || 'tyt').toLowerCase();
                 const tKey = exType === 'ayt' ? 'ayt' : 'tyt';
-                
+
                 totalMins += dur;
                 totalQ += q;
                 
-                stats.time.all[subj] = (stats.time.all[subj] || 0) + dur;
-                stats.time[tKey][subj] = (stats.time[tKey][subj] || 0) + dur;
-                
-                if (q > 0) {
-                    stats.q.all[subj] = (stats.q.all[subj] || 0) + q;
-                    stats.q[tKey][subj] = (stats.q[tKey][subj] || 0) + q;
+                const addDist = (statusKey) => {
+                    distStats[statusKey].time.all[subj] = (distStats[statusKey].time.all[subj] || 0) + dur;
+                    distStats[statusKey].time[tKey][subj] = (distStats[statusKey].time[tKey][subj] || 0) + dur;
+                    if (q > 0) {
+                        distStats[statusKey].q.all[subj] = (distStats[statusKey].q.all[subj] || 0) + q;
+                        distStats[statusKey].q[tKey][subj] = (distStats[statusKey].q[tKey][subj] || 0) + q;
+                    }
+                };
+
+                addDist('all');
+                if (task.isCompleted) {
+                    addDist('completed');
+                } else {
+                    addDist('uncompleted');
                 }
-                
+
                 if (task.isCompleted) {
                     completedTasksCount++;
                     completedMins += dur;
@@ -4764,8 +4789,14 @@
                 return html;
             };
 
-            const timeDistHtml = buildDistHtml('calTimeDist', stats.time, true, 'fa-solid fa-clock', 'Süre Dağılımı', 'var(--color-success)');
-            const qDistHtml = buildDistHtml('calQDist', stats.q, false, 'fa-solid fa-clipboard-question', 'Soru Dağılımı', 'var(--color-warning)');
+            const timeDistHtml_all = buildDistHtml('calTimeDist_all', distStats.all.time, true, 'fa-solid fa-clock', 'Süre Dağılımı', 'var(--color-success)');
+            const qDistHtml_all = buildDistHtml('calQDist_all', distStats.all.q, false, 'fa-solid fa-clipboard-question', 'Soru Dağılımı', 'var(--color-warning)');
+
+            const timeDistHtml_comp = buildDistHtml('calTimeDist_comp', distStats.completed.time, true, 'fa-solid fa-clock', 'Süre Dağılımı', 'var(--color-success)');
+            const qDistHtml_comp = buildDistHtml('calQDist_comp', distStats.completed.q, false, 'fa-solid fa-clipboard-question', 'Soru Dağılımı', 'var(--color-warning)');
+
+            const timeDistHtml_uncomp = buildDistHtml('calTimeDist_uncomp', distStats.uncompleted.time, true, 'fa-solid fa-clock', 'Süre Dağılımı', 'var(--color-success)');
+            const qDistHtml_uncomp = buildDistHtml('calQDist_uncomp', distStats.uncompleted.q, false, 'fa-solid fa-clipboard-question', 'Soru Dağılımı', 'var(--color-warning)');
 
             const plIds = Object.keys(playlistMap);
             let plHtml = '';
@@ -4822,31 +4853,59 @@
             window.openCalDetailModal = function() {
                 const existing = document.getElementById('calDetailModalOverlay');
                 if(existing) existing.remove();
-
+                
                 const modalStr = '' +
                 '<div id="calDetailModalOverlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; box-sizing:border-box; backdrop-filter:blur(5px);">' +
-                    '<div style="background:var(--color-bg-card, #ffffff); width:100%; max-width:550px; max-height:85vh; border-radius:16px; display:flex; flex-direction:column; box-shadow:0 10px 40px rgba(0,0,0,0.4); overflow:hidden; animation: fadeIn 0.2s ease-out; border:1px solid var(--color-border);">' +
+                    '<div style="background:var(--color-bg-card, #ffffff); width:100%; max-width:900px; max-height:85vh; border-radius:16px; display:flex; flex-direction:column; box-shadow:0 10px 40px rgba(0,0,0,0.4); overflow:hidden; animation: fadeIn 0.2s ease-out; border:1px solid var(--color-border);">' +
                         
-                        '<div style="padding:16px 20px; background:var(--color-bg-input); border-bottom:1px solid var(--color-border); display:flex; justify-content:space-between; align-items:center;">' +
+                        // --- MODAL BAŞLIĞI ---
+                        '<div style="padding:16px 20px; background:var(--color-bg-input); border-bottom:1px solid var(--color-border); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">' +
                             '<h3 style="margin:0; font-size:14px; font-weight:800; color:var(--color-text-main);"><i class="fa-solid fa-chart-pie" style="color:var(--color-primary); margin-right:6px;"></i> Detaylı Analiz</h3>' +
                             '<button onclick="document.getElementById(\'calDetailModalOverlay\').remove()" style="background:none; border:none; color:var(--color-text-muted); font-size:20px; cursor:pointer; padding:0; line-height:1;"><i class="fa-solid fa-xmark"></i></button>' +
                         '</div>' +
+                        
+                        '<div style="padding:20px; overflow-y:auto; display:flex; flex-direction:column; gap:20px;">' +
 
-                        '<div style="padding:20px; overflow-y:auto; display:flex; flex-direction:column;">' +
-                            '<div style="display:flex; gap:8px; margin-bottom:20px;">' + cardTasksModal + cardTimeModal + cardQModal + cardVidModal + '</div>' +
-                            
-                            timeDistHtml +
-                            qDistHtml +
-
-                            '<div style="background:var(--color-bg-card, #ffffff); padding:15px; border-radius:12px; border:1px solid var(--color-border); box-shadow:0 2px 5px rgba(0,0,0,0.02);">' +
-                                '<h4 style="margin:0 0 12px 0; font-size:12px; font-weight:800; color:var(--color-text-secondary); text-transform:uppercase;"><i class="fa-brands fa-youtube" style="color:var(--color-danger); margin-right:6px;"></i> Playlist Özeti</h4>' +
-                                plHtml +
+                            // --- ÜST BÖLGE: 4'lü İstatistik Kartları (Yatayda tam simetrik dağılım) ---
+                            '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px;">' +
+                                cardTasksModal + cardTimeModal + cardQModal + cardVidModal +
                             '</div>' +
 
-                        '</div>' +
-                    '</div>' +
-                '</div>';
+                            // --- ALT BÖLGE: Sol ve Sağ Paneller (Birebir aynı kutu tasarımı) ---
+                            '<div style="display:flex; flex-wrap:wrap; gap:20px; flex:1;">' +
 
+                                // SOL PANEL: Playlist Özeti Kutususu
+                                '<div style="flex:1; min-width:320px; background:var(--color-bg-card, #ffffff); padding:16px; border-radius:12px; border:1px solid var(--color-border); box-shadow:0 2px 8px rgba(0,0,0,0.03); display:flex; flex-direction:column; max-height:400px;">' +
+                                    '<h4 style="margin:0 0 16px 0; font-size:12px; font-weight:800; color:var(--color-text-secondary); text-transform:uppercase; flex-shrink:0; display:flex; align-items:center;"><i class="fa-brands fa-youtube" style="color:var(--color-danger); margin-right:8px; font-size:14px;"></i> Playlist Özeti</h4>' +
+                                    '<div style="overflow-y:auto; padding-right:8px; flex:1;">' + plHtml + '</div>' +
+                                '</div>' +
+
+                                // SAĞ PANEL: Dağılım Analizi ve Şalter Kutusu
+                                '<div style="flex:1; min-width:320px; background:var(--color-bg-card, #ffffff); padding:16px; border-radius:12px; border:1px solid var(--color-border); box-shadow:0 2px 8px rgba(0,0,0,0.03); display:flex; flex-direction:column; max-height:400px;">' +
+                                    
+                                    // Başlık ve Switch'i aynı hizaya aldık (Kusursuz görünüm)
+                                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-shrink:0; flex-wrap:wrap; gap:10px;">' +
+                                        '<h4 style="margin:0; font-size:12px; font-weight:800; color:var(--color-text-secondary); text-transform:uppercase; display:flex; align-items:center;"><i class="fa-solid fa-chart-bar" style="color:var(--color-primary); margin-right:8px; font-size:14px;"></i> Dağılım Analizi</h4>' +
+                                        '<div style="display:flex; justify-content:center; gap:4px; background:var(--color-bg-input); padding:4px; border-radius:8px; border:1px solid var(--color-border);">' +
+                                            '<button onclick="window.switchCalDistFilter(\'all\')" id="calDistFilterBtn_all" style="background:var(--color-primary); color:#fff; border:none; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer; transition:0.2s;">Tümü</button>' +
+                                            '<button onclick="window.switchCalDistFilter(\'comp\')" id="calDistFilterBtn_comp" style="background:transparent; color:var(--color-text-muted); border:none; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer; transition:0.2s;">Bitenler</button>' +
+                                            '<button onclick="window.switchCalDistFilter(\'uncomp\')" id="calDistFilterBtn_uncomp" style="background:transparent; color:var(--color-text-muted); border:none; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer; transition:0.2s;">Kalanlar</button>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    
+                                    // Grafikler
+                                    '<div style="overflow-y:auto; padding-right:8px; flex:1;">' +
+                                        '<div id="calDistWrap_all" style="display:flex; flex-direction:column; gap:12px;">' + timeDistHtml_all + qDistHtml_all + '</div>' +
+                                        '<div id="calDistWrap_comp" style="display:none; flex-direction:column; gap:12px;">' + timeDistHtml_comp + qDistHtml_comp + '</div>' +
+                                        '<div id="calDistWrap_uncomp" style="display:none; flex-direction:column; gap:12px;">' + timeDistHtml_uncomp + qDistHtml_uncomp + '</div>' +
+                                    '</div>' +
+                                '</div>' +
+
+                            '</div>' + 
+                        '</div>' + 
+                    '</div>' + 
+                '</div>';
+                
                 document.body.insertAdjacentHTML('beforeend', modalStr);
             };
         }
@@ -9306,12 +9365,16 @@
         // --- YENİ: KÜRESEL GÜN TAMAMLANMA DENETLEYİCİSİ (Akıllı Koşul Motoru) ---
         window.checkDayCompletion = function(tasks) {
             if (!tasks || tasks.length === 0) return false;
-            
+
             let dayTotalMins = 0;
             let dayTotalQ = 0;
+
             tasks.forEach(t => {
-                dayTotalMins += (parseInt(t.duration) || 0);
-                dayTotalQ += (parseInt(t.questionCount) || 0);
+                // Yalnızca tamamlanmış olan görevlerin süresi ve sorusu hesaba katılır
+                if (t.isCompleted) {
+                    dayTotalMins += (parseInt(t.duration) || 0);
+                    dayTotalQ += (parseInt(t.questionCount) || 0);
+                }
             });
 
             const conf = window.calColors || {};
@@ -9532,6 +9595,38 @@
             // Sayfa açıldığında hafızadaki tik ikonunu yükle (Ayarlar haftalikplanlayici.html'de)
             const savedIcon = localStorage.getItem('plannerCompletedIcon') || "'\\f00c'";
             document.documentElement.style.setProperty('--completed-icon-content', savedIcon);
+        });
+
+        // --- KOŞULLAR: SAAT VE DAKİKA AKILLI GİRİŞ SİSTEMİ ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const condTimeH = document.getElementById('calCondTimeH');
+            const condTimeM = document.getElementById('calCondTimeM');
+
+            if (condTimeH && condTimeM) {
+                // 1. Başındaki sıfırları otomatik silme (Örn: "05" yazılırsa "5" yapar)
+                [condTimeH, condTimeM].forEach(input => {
+                    input.addEventListener('input', function() {
+                        if (this.value !== '' && this.value.length > 1 && String(this.value).startsWith('0')) {
+                            this.value = parseInt(this.value, 10);
+                        }
+                    });
+                });
+
+                // 2. Dakika 60 ve üzeriyse saate dönüştürme (Kutudan çıkınca / İşlem bitince çalışır)
+                condTimeM.addEventListener('change', function() {
+                    let mins = parseInt(this.value, 10) || 0;
+                    
+                    if (mins >= 60) {
+                        let extraHours = Math.floor(mins / 60); // İçindeki tam saatleri bul (Örn: 70 / 60 = 1)
+                        let remainingMins = mins % 60;          // Kalan dakikayı bul (Örn: 70 % 60 = 10)
+                        
+                        let currentHours = parseInt(condTimeH.value, 10) || 0;
+                        
+                        condTimeH.value = currentHours + extraHours; // Saatin üstüne ekle
+                        this.value = remainingMins;                  // Dakikayı kalana eşitle
+                    }
+                });
+            }
         });
 
     </script>
@@ -10188,37 +10283,33 @@
         <div class="wlp-backdrop" onclick="window.closeWidgetLayoutPanel()"></div>
         <div class="wlp-box">
             <div class="wlp-title">
-                <i class="fa-solid fa-sliders" style="color:var(--color-primary);"></i>
-                Alt Ekran Düzeni
+                <i class="fa-solid fa-layer-group"></i> Alt Ekran Düzeni
             </div>
             <div class="wlp-subtitle">Sol ve sağ kutularda hangi modülün görüneceğini seçin.</div>
-
+            
             <div class="wlp-sides">
-                <!-- Sol Sütun -->
-                <div>
+                <div class="wlp-col">
                     <div class="wlp-side-label">
-                        <i class="fa-solid fa-arrow-left" style="font-size:10px;"></i> Sol
+                        <i class="fa-solid fa-arrow-left-long"></i> Sol Panel
                     </div>
-                    <div id="wlpLeftOptions"></div>
+                    <div id="wlpLeftOptions" style="display:flex; flex-direction:column; gap:10px;"></div>
                 </div>
-
-                <!-- Orta ok -->
+                
                 <div class="wlp-divider-col">
-                    <i class="fa-solid fa-right-left"></i>
+                    <i class="fa-solid fa-arrows-left-right"></i>
                 </div>
 
-                <!-- Sağ Sütun -->
-                <div>
+                <div class="wlp-col">
                     <div class="wlp-side-label">
-                        Sağ <i class="fa-solid fa-arrow-right" style="font-size:10px;"></i>
+                        Sağ Panel <i class="fa-solid fa-arrow-right-long"></i>
                     </div>
-                    <div id="wlpRightOptions"></div>
+                    <div id="wlpRightOptions" style="display:flex; flex-direction:column; gap:10px;"></div>
                 </div>
             </div>
 
             <div class="wlp-footer">
-                <button class="cancel-note-btn" onclick="window.closeWidgetLayoutPanel()" style="padding:9px 18px; font-size:13px;">İptal</button>
-                <button class="save-note-btn" id="wlpApplyBtn" onclick="window.applyWidgetLayout()" style="padding:9px 20px; font-size:13px;"><i class="fa-solid fa-check"></i> Uygula</button>
+                <button class="cancel-note-btn" onclick="window.closeWidgetLayoutPanel()" style="padding:10px 20px; font-size:13px; border-radius: var(--radius-md);">Kapat</button>
+                <button class="save-note-btn" id="wlpApplyBtn" onclick="window.applyWidgetLayout()" style="padding:10px 24px; font-size:13px; border-radius: var(--radius-md);"><i class="fa-solid fa-check" style="margin-right:6px;"></i> Kaydet ve Uygula</button>
             </div>
         </div>
     </div>
