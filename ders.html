@@ -920,73 +920,327 @@
             flex: 7; /* YENİ: Ekranın dikeyde kalan kısmının %60'ını burası alır */
             min-height: 0; /* ALTIN KURAL: İçerik taşmasını KESİN engeller! */
             display: grid;
-            grid-template-columns: var(--col1, 1fr) 15px var(--col2, 2fr) 15px var(--col3, 1fr); 
+            grid-template-columns: var(--mid-col1, 1fr) 10px var(--mid-col2, 2fr) 10px var(--mid-col3, 1fr); 
             gap: 0;
+            position: relative;
         }
 
-        /* YENİ: Sürükleme Çubukları (Ayraçlar) Tasarımı */
-        .drag-resizer {
-            cursor: col-resize; 
+        /* Paneller arası ince ayırıcı çizgi */
+        .middle-section-divider {
             display: flex;
-            justify-content: center;
             align-items: center;
-            border-radius: 10px;
-            transition: background 0.2s;
-            margin: 0 2px;
-            position: relative; /* Butonun çubuğun en altına inmesi için */
+            justify-content: center;
         }
-        .drag-resizer:hover, .drag-resizer.dragging {
-            background-color: var(--color-bg-hover);
+        .middle-section-divider::after {
+            content: '';
+            width: 2px;
+            height: 50%;
+            background: var(--color-border);
+            border-radius: 2px;
+        }
+
+        /* --- ORTA KISIM AYAR PANELİ (MLP) TASARIMI --- */
+        #mlpBackdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 4799;
+            background: rgba(0,0,0,0);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease,
+                        background 0.25s ease, backdrop-filter 0.25s ease;
+        }
+        #mlpBackdrop.show {
+            opacity: 1;
+            visibility: visible;
+            background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        #middleLayoutPanel {
+            position: fixed;
+            inset: 0;
+            z-index: 4800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+        #middleLayoutPanel.show { opacity: 1; visibility: visible; pointer-events: auto; }
+        #middleLayoutPanel .mlp-backdrop {
+            position: absolute;
+            inset: 0;
+            background: transparent;
         }
         
-        /* Çubuğun içindeki şık mavi çizgi */
-        .drag-resizer::after {
-            content: '';
-            width: 4px;
-            height: 40px;
-            background-color: var(--color-primary-border);
-            border-radius: var(--radius-xs);
-            transition: background 0.2s, height 0.2s;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%); /* Çizgiyi tam ortaya kilitler */
+        #middleLayoutPanel .mlp-box {
+            position: relative;
+            z-index: 1;
+            background: var(--color-bg-card);
+            border-radius: var(--radius-xl);
+            padding: 30px;
+            width: 92%;
+            max-width: 720px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(40px);
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid var(--color-border);
+            max-height: 90vh;
+            overflow-y: auto;
         }
-        .drag-resizer:hover::after, .drag-resizer.dragging::after {
-            background-color: var(--color-primary);
-            height: 60px; 
+        #middleLayoutPanel.show .mlp-box { transform: translateY(0); }
+
+        .mlp-title { font-size: 20px; font-weight: 800; color: var(--color-text-main); margin-bottom: 5px; display: flex; align-items: center; gap: 10px; }
+        .mlp-title i { color: var(--color-primary); font-size: 24px; }
+        .mlp-subtitle { font-size: 13px; color: var(--color-text-muted); font-weight: 600; margin-bottom: 20px; line-height: 1.4; flex-shrink: 0; }
+
+        /* Önizleme Barı */
+        .mlp-preview-bar {
+            display: flex;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            border: 2px solid var(--color-border);
+            margin-bottom: 22px;
+            background: var(--color-bg-input);
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .mlp-preview-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--color-primary);
+            transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 0 8px;
+        }
+        .mlp-preview-segment i { font-size: 13px; flex-shrink: 0; }
+        .mlp-preview-segment + .mlp-preview-segment { border-left: 2px solid var(--color-border); }
+
+        /* Slot Kartları */
+        .mlp-slots-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 22px;
         }
 
-        /* YENİ: Çubukların İçindeki Kısmi Sıfırlama Butonları */
-        .resizer-reset-btn {
-            position: absolute;
-            bottom: 15px; /* Çubuğun altından hizalar */
-            background: var(--color-bg-card);
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary-border);
-            border-radius: var(--radius-full);
-            width: 26px;
-            height: 26px;
-            cursor: pointer;
+        .mlp-slot-card {
+            background: var(--color-bg-input);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 16px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            transition: border-color 0.2s;
+        }
+        .mlp-slot-card:hover { border-color: var(--color-primary-border); }
+
+        .mlp-slot-header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            transition: var(--transition-fast);
-            z-index: 10; /* Çizginin üstünde durmasını sağlar */
         }
-        .resizer-reset-btn i {
-            font-size: 11px;
-            transition: transform 0.4s ease;
+        .mlp-slot-label {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .resizer-reset-btn:hover {
+        .mlp-slot-label .slot-badge {
             background: var(--color-primary);
             color: #fff;
-            border-color: var(--color-primary);
-            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
-            transform: scale(1.1);
+            font-size: 10px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
         }
-        .resizer-reset-btn:hover i {
-            transform: rotate(180deg);
+
+        /* Yüzde Slider */
+        .mlp-size-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .mlp-size-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--color-text-muted);
+            min-width: 48px;
+            text-align: right;
+        }
+        .mlp-size-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--color-border);
+            outline: none;
+            transition: background 0.2s;
+        }
+        .mlp-size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.35);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .mlp-size-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 3px 10px rgba(0, 123, 255, 0.5);
+        }
+        .mlp-size-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 6px rgba(0, 123, 255, 0.35);
+        }
+        .mlp-size-value {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--color-primary);
+            min-width: 42px;
+            text-align: center;
+            background: var(--color-primary-lighter);
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Modül Seçim Butonları */
+        .mlp-module-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .mlp-module-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 14px;
+            border-radius: var(--radius-md);
+            border: 2px solid transparent;
+            background: var(--color-bg-card);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text-secondary);
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .mlp-module-btn:hover {
+            border-color: var(--color-primary-border);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.08);
+        }
+        .mlp-module-btn.mlp-selected {
+            border-color: var(--color-primary);
+            background: var(--color-primary-lighter);
+            color: var(--color-primary);
+            font-weight: 800;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.12);
+        }
+        .mlp-module-btn.mlp-used {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            filter: grayscale(80%);
+        }
+        .mlp-module-btn i { font-size: 14px; width: 16px; text-align: center; }
+
+        .mlp-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        /* Drag Mode Select */
+        .mlp-drag-select {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--color-text-main);
+            background: var(--color-bg-card);
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            text-align: center;
+        }
+        .mlp-drag-select:focus { border-color: var(--color-primary); }
+
+        /* Drag Boxes */
+        .mlp-drag-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary);
+            background: var(--color-bg-card);
+            transition: flex 0.08s ease;
+            min-width: 50px;
+            overflow: hidden;
+            gap: 4px;
+        }
+        .mlp-drag-box:first-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+        .mlp-drag-box:last-child { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+
+        /* Drag Handle */
+        .mlp-drag-handle {
+            width: 18px;
+            flex-shrink: 0;
+            cursor: col-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+            transition: background 0.15s;
+            background: var(--color-bg-input);
+        }
+        .mlp-drag-handle:hover, .mlp-drag-handle.dragging {
+            background: var(--color-primary-lighter);
+        }
+        .mlp-drag-handle-line {
+            width: 4px;
+            height: 50px;
+            background: var(--color-primary-border);
+            border-radius: 3px;
+            transition: background 0.15s, height 0.15s, width 0.15s;
+        }
+        .mlp-drag-handle:hover .mlp-drag-handle-line,
+        .mlp-drag-handle.dragging .mlp-drag-handle-line {
+            background: var(--color-primary);
+            height: 70px;
+            width: 5px;
         }
 
         .dashboard-widget {
@@ -1957,8 +2211,9 @@
                 overflow-y: auto; /* İçerik sığmazsa aşağı kaydırma çubuğunu (scroll) açar */
             }
             .middle-section {
-                grid-template-columns: 1fr 1fr; /* 3'lü yan yana sütunu 2 sütuna düşürür */
+                grid-template-columns: 1fr 1fr !important; /* 3'lü yan yana sütunu 2 sütuna düşürür */
             }
+            .middle-section-divider { display: none !important; }
             .schedule-widget {
                 grid-column: span 2; /* Ders programı çok yer kapladığı için alt satıra geçer ve boydan boya uzar */
                 order: -1; /* Hatta görsel bütünlük için Ders Programını en başa (üste) alırız */
@@ -1971,8 +2226,9 @@
         /* 2. TABLETLER (992px ve altı) */
         @media (max-width: 992px) {
             .middle-section {
-                grid-template-columns: 1fr; /* Tüm dashboard modüllerini ezilmemesi için tek sütunda alt alta dizer */
+                grid-template-columns: 1fr !important; /* Tüm dashboard modüllerini ezilmemesi için tek sütunda alt alta dizer */
             }
+            .middle-section-divider { display: none !important; }
             .schedule-widget {
                 grid-column: span 1; /* Tek sütun olduğu için boydan uzamayı sıfırlarız */
             }
@@ -2843,6 +3099,15 @@
         </div>
 
         <div style="display: flex; align-items: center; gap: 15px;">
+            <button id="middleLayoutBtn" onclick="window.openMiddleLayoutPanel()" data-custom-title="Orta Alan Düzenini Ayarla"
+                style="display:flex; align-items:center; justify-content:center;
+                       width:34px; height:34px; border-radius:50%; border:2px solid var(--color-primary-border);
+                       background:var(--color-bg-card); color:var(--color-primary); cursor:pointer;
+                       font-size:13px; box-shadow:var(--shadow-md); transition:var(--transition-fast);"
+                onmouseover="this.style.background='var(--color-primary)';this.style.color='#fff';this.style.borderColor='var(--color-primary)';this.style.boxShadow='0 6px 16px rgba(0,123,255,0.35)'"
+                onmouseout="this.style.background='var(--color-bg-card)';this.style.color='var(--color-primary)';this.style.borderColor='var(--color-primary-border)';this.style.boxShadow='var(--shadow-md)'">
+                <i class="fa-solid fa-sliders"></i>
+            </button>
             <div id="headerAuthContainer" style="display: flex; align-items: center; gap: 10px;"></div>
             
             <button class="menu-btn" title="Menü">
@@ -2901,11 +3166,7 @@
             </div>
         </div>
 
-        <div class="drag-resizer" id="resizer1">
-            <button class="resizer-reset-btn" id="resetLeftBtn" data-custom-title="Düzeni sıfırla">
-                <i class="fa-solid fa-arrows-rotate"></i>
-            </button>
-        </div>
+        <div class="middle-section-divider"></div>
 
         <div class="widget-box dashboard-widget schedule-widget">
             <div class="widget-header" style="display: flex; justify-content: space-between; align-items: center;">
@@ -2960,11 +3221,7 @@
             </div>
         </div>
 
-        <div class="drag-resizer" id="resizer2">
-            <button class="resizer-reset-btn" id="resetRightBtn" data-custom-title="Düzeni sıfırla">
-                <i class="fa-solid fa-arrows-rotate"></i>
-            </button>
-        </div>
+        <div class="middle-section-divider"></div>
 
         <div class="widget-box dashboard-widget notes-widget">
             <div class="widget-header notes-header">
@@ -5561,9 +5818,20 @@
                         const userData = userDocSnap.data();
                         window.currentUserProfileData = userData;
                         if (userData.username) {
-                            const profBtn = document.getElementById('headerProfileBtn');
-                            if (profBtn) profBtn.innerHTML = `<i class="fa-solid fa-user"></i> ${userData.username}`;
+                            // YENİ EKLENDİ: Yanlış ID düzeltildi ve Navbar tasarımına uyarlandı
+                            document.getElementById('headerAuthContainer').innerHTML = `
+                                <span style="font-weight:700; font-size:13px; color:var(--color-text-secondary);"><i class="fa-solid fa-user" style="margin-right:5px; color:var(--color-primary);"></i> ${userData.username}</span>
+                            `;
                         }
+                        
+                        // 👇👇👇 YENİ EKLENEN: Admin yetkisi kontrolü 👇👇👇
+                        if (userData.isAdmin === true) {
+                            if (document.getElementById('sideMenuAdminBtn')) {
+                                document.getElementById('sideMenuAdminBtn').style.display = '';
+                            }
+                        }
+                        // 👆👆👆 YENİ EKLENEN KISIM BİTTİ 👆👆👆
+
                         // Konu tamamlanma verilerini yükle
                         window.completedTopics = userData.completedTopics || {};
                         // Eski not migrasyonu (varsa)
@@ -6915,164 +7183,361 @@
             }
         });
 
-        // --- SÜRÜKLENEBİLİR PANELLER (DİNAMİK BOYUTLANDIRMA MOTORU) ---
-        const middleSection = document.getElementById('dynamicMiddleSection');
-        const resizer1 = document.getElementById('resizer1');
-        const resizer2 = document.getElementById('resizer2');
-        
-        let isDraggingLayout = false;
-        let currentResizerId = null;
-        let startX, startWLeft, startWRight;
-        let widget1, widget2, widget3;
+        // --- ORTA KISIM DÜZEN AYAR PANELİ MOTORU ---
+        window.middleCatalog = [
+            { id: 'exams',    label: 'Denemelerim',      icon: 'fa-solid fa-chart-line',       minPct: 30 },
+            { id: 'schedule', label: 'Ders Programı',    icon: 'fa-solid fa-calendar-day',     minPct: 40 },
+            { id: 'notes',    label: 'Notlarım',         icon: 'fa-solid fa-pen-to-square',    minPct: 25 },
+        ];
 
-        function startLayoutDrag(e, resizerNum) {
-            isDraggingLayout = true;
-            currentResizerId = resizerNum;
-            startX = e.clientX;
+        const defaultMiddleLayout = {
+            slots: [
+                { moduleId: 'exams',    pct: 30 },
+                { moduleId: 'schedule', pct: 45 },
+                { moduleId: 'notes',    pct: 25 },
+            ]
+        };
 
-            // Kutuları dinamik olarak seçiyoruz (Aralarda resizer'lar olduğu için indexler 0, 2, 4)
-            widget1 = middleSection.children[0];
-            widget2 = middleSection.children[2];
-            widget3 = middleSection.children[4];
+        window.middleLayout = JSON.parse(
+            localStorage.getItem('middleLayout') || JSON.stringify(defaultMiddleLayout)
+        );
 
-            // Anlık genişlikleri piksel (px) olarak ölçüp sisteme kilitliyoruz
-            const w1 = widget1.getBoundingClientRect().width;
-            const w2 = widget2.getBoundingClientRect().width;
-            const w3 = widget3.getBoundingClientRect().width;
-
-            middleSection.style.setProperty('--col1', w1 + 'px');
-            middleSection.style.setProperty('--col2', w2 + 'px');
-            middleSection.style.setProperty('--col3', w3 + 'px');
-
-            if (resizerNum === 1) {
-                startWLeft = w1;
-                startWRight = w2;
-                resizer1.classList.add('dragging');
-            } else {
-                startWLeft = w2;
-                startWRight = w3;
-                resizer2.classList.add('dragging');
-            }
-
-            document.body.style.cursor = 'col-resize';
-            document.body.style.userSelect = 'none'; // Sürüklerken yazıların mavi mavi seçilmesini engeller
-
-            document.addEventListener('mousemove', layoutDrag);
-            document.addEventListener('mouseup', stopLayoutDrag);
+        function getModuleMin(moduleId) {
+            const mod = window.middleCatalog.find(m => m.id === moduleId);
+            return mod ? mod.minPct : 5;
         }
 
-        if(resizer1 && resizer2) {
-            resizer1.addEventListener('mousedown', (e) => startLayoutDrag(e, 1));
-            resizer2.addEventListener('mousedown', (e) => startLayoutDrag(e, 2));
+        // Panel state
+        let _mlpDragSlots = [];
+
+        // --- DOM'a uygula ---
+        function applyMiddleVisibility() {
+            const ms = document.getElementById('dynamicMiddleSection');
+            if (!ms) return;
+            const slots = window.middleLayout.slots;
+            const widgetMap = {
+                'exams':    ms.querySelector('.widget-box.dashboard-widget:not(.schedule-widget):not(.notes-widget)'),
+                'schedule': ms.querySelector('.schedule-widget'),
+                'notes':    ms.querySelector('.notes-widget'),
+            };
+            const colTemplate = slots.map((s, i) => {
+                return s.pct + 'fr' + (i < slots.length - 1 ? ' 10px' : '');
+            }).join(' ');
+            ms.style.gridTemplateColumns = colTemplate;
+            const dividers = Array.from(ms.querySelectorAll(':scope > .middle-section-divider'));
+            const allChildren = Array.from(ms.children);
+            allChildren.forEach(ch => ms.removeChild(ch));
+            slots.forEach((slot, i) => {
+                const w = widgetMap[slot.moduleId];
+                if (w) ms.appendChild(w);
+                if (i < slots.length - 1) {
+                    const div = dividers[i] || document.createElement('div');
+                    div.className = 'middle-section-divider';
+                    ms.appendChild(div);
+                }
+            });
+            if (typeof updateChart === 'function') setTimeout(updateChart, 100);
         }
 
-        function layoutDrag(e) {
-            if (!isDraggingLayout) return;
-            const dx = e.clientX - startX;
+        document.addEventListener('DOMContentLoaded', () => { applyMiddleVisibility(); });
+        setTimeout(() => { applyMiddleVisibility(); }, 500);
 
-            let newLeft = startWLeft + dx;
-            let newRight = startWRight - dx;
+        // --- Panel aç / kapat ---
+        window.openMiddleLayoutPanel = function() {
+            _mlpDragSlots = JSON.parse(JSON.stringify(window.middleLayout.slots));
+            initPanel();
+            document.getElementById('mlpBackdrop').classList.add('show');
+            document.getElementById('middleLayoutPanel').classList.add('show');
+        };
+        window.closeMiddleLayoutPanel = function() {
+            document.getElementById('mlpBackdrop').classList.remove('show');
+            document.getElementById('middleLayoutPanel').classList.remove('show');
+        };
 
-            // KORUMA KALKANI: Kutuların çok fazla küçülüp görünmez olmasını (ezilmesini) engeller
-            if (newLeft < 250) {
-                newLeft = 250;
-                newRight = startWLeft + startWRight - 250;
+        // --- Slot değerini güncelle (bağımsız, toplam kontrolsüz) ---
+        function setDragSlotPct(index, newVal) {
+            const minVal = getModuleMin(_mlpDragSlots[index].moduleId);
+            if (newVal < minVal) newVal = minVal;
+            if (newVal > 90) newVal = 90;
+            _mlpDragSlots[index].pct = Math.round(newVal * 10) / 10;
+            updateDragUI();
+        }
+
+        // --- UI güncelle (kutular + sayılar + toplam + hızlı butonlar) ---
+        function updateDragUI() {
+            const total = Math.round(_mlpDragSlots.reduce((s, x) => s + x.pct, 0) * 10) / 10;
+            const diff = Math.round((total - 100) * 10) / 10;
+            const isOk = Math.abs(diff) < 0.05;
+
+            // Drag area kırmızı/normal çerçeve
+            const dragArea = document.getElementById('mlpDragArea');
+            if (dragArea) {
+                if (isOk) {
+                    dragArea.style.borderColor = 'var(--color-border-medium)';
+                    dragArea.style.boxShadow = 'inset 0 2px 6px rgba(0,0,0,0.04)';
+                } else {
+                    dragArea.style.borderColor = '#d9534f';
+                    dragArea.style.boxShadow = '0 0 0 3px rgba(217,83,79,0.15), inset 0 2px 6px rgba(217,83,79,0.06)';
+                }
             }
-            if (newRight < 250) {
-                newRight = 250;
-                newLeft = startWLeft + startWRight - 250;
-            }
 
-            if (currentResizerId === 1) {
-                middleSection.style.setProperty('--col1', newLeft + 'px');
-                middleSection.style.setProperty('--col2', newRight + 'px');
-            } else {
-                middleSection.style.setProperty('--col2', newLeft + 'px');
-                middleSection.style.setProperty('--col3', newRight + 'px');
+            _mlpDragSlots.forEach((slot, i) => {
+                const mod = window.middleCatalog.find(m => m.id === slot.moduleId);
+                const minVal = getModuleMin(slot.moduleId);
+                const box = document.getElementById('mlpDragBox' + i);
+                const icon = document.getElementById('mlpDragIcon' + i);
+                const label = document.getElementById('mlpDragLabel' + i);
+                const pctEl = document.getElementById('mlpDragPct' + i);
+                if (box) box.style.flex = slot.pct + '';
+                if (icon && mod) { icon.className = mod.icon; icon.style.cssText = 'font-size:24px; opacity:0.8;'; }
+                if (label && mod) label.textContent = mod.label;
+                if (pctEl) {
+                    pctEl.textContent = '%' + slot.pct.toFixed(1).replace(/\.0$/, '');
+                    pctEl.style.color = slot.pct <= minVal + 1 ? 'var(--color-danger)' : '';
+                }
+
+                // Sayı input'u
+                const numInput = document.getElementById('mlpUnifiedNum' + i);
+                if (numInput && document.activeElement !== numInput) {
+                    numInput.value = slot.pct.toFixed(1).replace(/\.0$/, '');
+                }
+                const minLabel = document.getElementById('mlpMinLabel' + i);
+                if (minLabel) minLabel.textContent = 'min %' + minVal;
+
+                // Hızlı ayar butonu
+                const qb = document.getElementById('mlpQuickAdj' + i);
+                if (qb) {
+                    if (isOk) {
+                        qb.style.display = 'none';
+                    } else {
+                        qb.style.display = 'inline-flex';
+                        const absDiff = Math.round(Math.abs(diff) * 10) / 10;
+                        if (diff > 0) {
+                            const canReduce = Math.round((slot.pct - minVal) * 10) / 10;
+                            const amt = Math.min(absDiff, canReduce);
+                            if (amt > 0.05) {
+                                qb.textContent = amt.toFixed(1).replace(/\.0$/, '') + ' düş';
+                                qb.style.cssText = 'display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:50px;border:1.5px solid #ffc2c2;font-size:11px;font-weight:800;cursor:pointer;transition:all 0.15s;background:#fff0f0;color:#d9534f;';
+                                qb.onclick = function() { setDragSlotPct(i, slot.pct - amt); };
+                            } else {
+                                qb.textContent = 'min';
+                                qb.style.cssText = 'display:inline-flex;align-items:center;padding:4px 10px;border-radius:50px;border:1.5px solid #ddd;font-size:10px;font-weight:700;cursor:not-allowed;background:#f8f9fa;color:#aaa;opacity:0.5;pointer-events:none;';
+                            }
+                        } else {
+                            const canAdd = Math.round((90 - slot.pct) * 10) / 10;
+                            const amt = Math.min(absDiff, canAdd);
+                            if (amt > 0.05) {
+                                qb.textContent = absDiff.toFixed(1).replace(/\.0$/, '') + ' ekle';
+                                qb.style.cssText = 'display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:50px;border:1.5px solid #c3e6cb;font-size:11px;font-weight:800;cursor:pointer;transition:all 0.15s;background:#e6f9ee;color:#28a745;';
+                                qb.onclick = function() { setDragSlotPct(i, slot.pct + amt); };
+                            } else {
+                                qb.textContent = 'max';
+                                qb.style.cssText = 'display:inline-flex;align-items:center;padding:4px 10px;border-radius:50px;border:1.5px solid #ddd;font-size:10px;font-weight:700;cursor:not-allowed;background:#f8f9fa;color:#aaa;opacity:0.5;pointer-events:none;';
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Select'leri senkronize
+            ['Left', 'Center', 'Right'].forEach((pos, idx) => {
+                const sel = document.getElementById('mlpDragSel' + pos);
+                if (sel && _mlpDragSlots[idx]) sel.value = _mlpDragSlots[idx].moduleId;
+            });
+
+            // Toplam göstergesi
+            const totalEl = document.getElementById('mlpDragTotal');
+            const totalIcon = document.getElementById('mlpDragTotalIcon');
+            const totalMsg = document.getElementById('mlpDragTotalMsg');
+            const totalIndicator = document.getElementById('mlpDragTotalRow');
+            const applyBtn = document.getElementById('mlpApplyBtn');
+            if (totalEl) {
+                totalEl.textContent = '%' + total.toFixed(1).replace(/\.0$/, '');
+                if (isOk) {
+                    totalEl.style.color = 'var(--color-success)';
+                    totalIcon.className = 'fa-solid fa-circle-check';
+                    totalIcon.style.color = 'var(--color-success)';
+                    totalIndicator.style.background = 'var(--color-success-light)';
+                    totalIndicator.style.borderColor = 'var(--color-success-border)';
+                    totalMsg.style.display = 'none';
+                    applyBtn.disabled = false; applyBtn.style.opacity = '1'; applyBtn.style.cursor = 'pointer';
+                } else {
+                    totalEl.style.color = 'var(--color-danger)';
+                    totalIcon.className = 'fa-solid fa-triangle-exclamation';
+                    totalIcon.style.color = 'var(--color-danger)';
+                    totalIndicator.style.background = 'var(--color-danger-light)';
+                    totalIndicator.style.borderColor = 'var(--color-danger-border)';
+                    totalMsg.textContent = diff > 0 ? '(' + Math.abs(diff).toFixed(1).replace(/\.0$/,'') + ' fazla)' : '(' + Math.abs(diff).toFixed(1).replace(/\.0$/,'') + ' eksik)';
+                    totalMsg.style.display = 'inline';
+                    totalMsg.style.color = 'var(--color-danger)';
+                    applyBtn.disabled = true; applyBtn.style.opacity = '0.5'; applyBtn.style.cursor = 'not-allowed';
+                }
             }
         }
 
-        function stopLayoutDrag() {
-            if(!isDraggingLayout) return;
-            isDraggingLayout = false;
-            document.removeEventListener('mousemove', layoutDrag);
-            document.removeEventListener('mouseup', stopLayoutDrag);
-            document.body.style.cursor = 'default';
-            document.body.style.userSelect = 'auto';
-            if(resizer1) resizer1.classList.remove('dragging');
-            if(resizer2) resizer2.classList.remove('dragging');
+        // --- Panel başlat ---
+        function initPanel() {
+            // Select'leri doldur
+            ['Left', 'Center', 'Right'].forEach((pos, idx) => {
+                const sel = document.getElementById('mlpDragSel' + pos);
+                if (!sel) return;
+                sel.innerHTML = '';
+                window.middleCatalog.forEach(mod => {
+                    const opt = document.createElement('option');
+                    opt.value = mod.id;
+                    opt.textContent = mod.label;
+                    if (_mlpDragSlots[idx] && _mlpDragSlots[idx].moduleId === mod.id) opt.selected = true;
+                    sel.appendChild(opt);
+                });
+                sel.onchange = function() {
+                    _mlpDragSlots[idx].moduleId = this.value;
+                    updateDragUI();
+                };
+            });
 
-            // Pikselleri tekrar oransal 'fr' (kesir) birimine çeviriyoruz ki 
-            // kullanıcı tarayıcıyı tam ekran yaptığında oranlar bozulmasın
-            const w1 = widget1.getBoundingClientRect().width;
-            const w2 = widget2.getBoundingClientRect().width;
-            const w3 = widget3.getBoundingClientRect().width;
-            
-            middleSection.style.setProperty('--col1', w1 + 'fr');
-            middleSection.style.setProperty('--col2', w2 + 'fr');
-            middleSection.style.setProperty('--col3', w3 + 'fr');
-            
-            // Grafiğin çözünürlüğünü yeni boyuta göre onar
-            updateChart?.(); 
+            // Sayı input satırı oluştur
+            const numRow = document.getElementById('mlpNumRow');
+            if (numRow) {
+                numRow.innerHTML = '';
+                _mlpDragSlots.forEach((slot, i) => {
+                    const mod = window.middleCatalog.find(m => m.id === slot.moduleId);
+                    const minVal = getModuleMin(slot.moduleId);
+                    const col = document.createElement('div');
+                    col.style.cssText = 'flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; background:var(--color-bg-input); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:12px 8px;';
+                    col.innerHTML =
+                        '<span id="mlpMinLabel' + i + '" style="font-size:10px; font-weight:700; color:var(--color-text-light);">min %' + minVal + '</span>' +
+                        '<div style="display:flex; align-items:center; gap:4px;">' +
+                        '<span style="font-size:14px; font-weight:800; color:var(--color-text-muted);">%</span>' +
+                        '<input type="number" id="mlpUnifiedNum' + i + '" value="' + slot.pct.toFixed(1).replace(/\.0$/, '') + '" step="0.1" ' +
+                        'style="width:58px; padding:6px 8px; border:2px solid var(--color-border-medium); border-radius:var(--radius-md); text-align:center; font-size:15px; font-weight:800; color:var(--color-primary); outline:none; transition:border-color 0.2s,box-shadow 0.2s; font-family:inherit; background:var(--color-bg-card); -moz-appearance:textfield;" ' +
+                        'onfocus="this.style.borderColor=\'var(--color-primary)\';this.style.boxShadow=\'0 0 0 3px rgba(0,123,255,0.1)\'" ' +
+                        'onblur="this.style.borderColor=\'var(--color-border-medium)\';this.style.boxShadow=\'none\'">' +
+                        '</div>' +
+                        '<button id="mlpQuickAdj' + i + '" style="display:none;"></button>';
+                    numRow.appendChild(col);
+
+                    setTimeout(() => {
+                        const inp = document.getElementById('mlpUnifiedNum' + i);
+                        if (!inp) return;
+                        inp.addEventListener('input', function() {
+                            var val = parseFloat(this.value);
+                            if (!isNaN(val)) setDragSlotPct(i, val);
+                        });
+                        inp.addEventListener('blur', function() {
+                            var val = parseFloat(this.value);
+                            if (isNaN(val)) val = getModuleMin(_mlpDragSlots[i].moduleId);
+                            setDragSlotPct(i, val);
+                        });
+                        inp.addEventListener('wheel', function(e) { e.preventDefault(); });
+                    }, 0);
+                });
+            }
+
+            // Toplam göstergesi
+            let totalRow = document.getElementById('mlpDragTotalRow');
+            if (totalRow) totalRow.remove();
+            totalRow = document.createElement('div');
+            totalRow.id = 'mlpDragTotalRow';
+            totalRow.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:10px;padding:10px 16px;border-radius:var(--radius-lg);border:2px solid var(--color-success-border);background:var(--color-success-light);margin-top:10px;transition:all 0.2s ease;';
+            totalRow.innerHTML =
+                '<i id="mlpDragTotalIcon" class="fa-solid fa-circle-check" style="font-size:14px;color:var(--color-success);"></i>' +
+                '<span style="font-size:13px;font-weight:800;color:inherit;">Toplam:</span>' +
+                '<span id="mlpDragTotal" style="font-size:16px;font-weight:900;color:var(--color-success);">%100</span>' +
+                '<span id="mlpDragTotalMsg" style="font-size:12px;font-weight:700;display:none;"></span>';
+            const numRowEl = document.getElementById('mlpNumRow');
+            if (numRowEl) numRowEl.parentNode.insertBefore(totalRow, numRowEl.nextSibling);
+
+            updateDragUI();
+            initDragHandles();
         }
 
-        // --- DÜZENİ KISMİ SIFIRLAMA BUTONLARI (KORUMA KALKANLI MOTOR) ---
-        const resetLeftBtn = document.getElementById('resetLeftBtn');
-        const resetRightBtn = document.getElementById('resetRightBtn');
+        // --- Sürükleme motoru ---
+        function initDragHandles() {
+            const area = document.getElementById('mlpDragArea');
+            if (!area) return;
 
-        // --- DÜZENİ KISMİ SIFIRLAMA BUTONLARI ---
-        // Sorun: px bazlı animasyon 3 sütunu da aynı anda piksel cinsinden kilitleyip
-        //        dokunulmayan paneli de kaydırıyordu ve animasyon sırasında ekstradan
-        //        küçülüp-büyüme titremesi oluşuyordu.
-        // Çözüm: Animasyonu tamamen kaldır; doğrudan fr değerlerine geç.
-        //        fr biriminde CSS kendi içinde oransal hesap yapar, hiçbir panel
-        //        istemeden etkilenmez.
+            [0, 1].forEach(handleIdx => {
+                const handle = document.getElementById('mlpDragHandle' + handleIdx);
+                if (!handle) return;
 
-        if (resetLeftBtn) {
-            resetLeftBtn.addEventListener('mousedown', (e) => e.stopPropagation());
-            resetLeftBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const w3 = middleSection.children[4].getBoundingClientRect().width;
-                const pool = middleSection.children[0].getBoundingClientRect().width
-                           + middleSection.children[2].getBoundingClientRect().width;
-                const t1 = pool * (1 / 3);
-                const t2 = pool * (2 / 3);
-                middleSection.style.transition = 'grid-template-columns 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
-                middleSection.style.setProperty('--col1', t1 + 'px');
-                middleSection.style.setProperty('--col2', t2 + 'px');
-                middleSection.style.setProperty('--col3', w3 + 'px');
-                setTimeout(() => {
-                    middleSection.style.transition = '';
-                    middleSection.style.setProperty('--col1', t1 + 'fr');
-                    middleSection.style.setProperty('--col2', t2 + 'fr');
-                    middleSection.style.setProperty('--col3', w3 + 'fr');
-                    updateChart?.();
-                }, 400);
+                let isDragging = false;
+                let startX = 0;
+
+                function onDown(e) {
+                    e.preventDefault();
+                    isDragging = true;
+                    startX = e.touches ? e.touches[0].clientX : e.clientX;
+                    handle.classList.add('dragging');
+                    document.body.style.cursor = 'col-resize';
+                    document.body.style.userSelect = 'none';
+                    document.addEventListener('mousemove', onMove);
+                    document.addEventListener('mouseup', onUp);
+                    document.addEventListener('touchmove', onMove, { passive: false });
+                    document.addEventListener('touchend', onUp);
+                }
+
+                function onMove(e) {
+                    if (!isDragging) return;
+                    e.preventDefault();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const dx = clientX - startX;
+                    startX = clientX;
+
+                    const areaW = area.getBoundingClientRect().width - 36;
+                    const dPct = (dx / areaW) * 100;
+
+                    const leftIdx = handleIdx;
+                    const rightIdx = handleIdx + 1;
+                    let newLeft = _mlpDragSlots[leftIdx].pct + dPct;
+                    let newRight = _mlpDragSlots[rightIdx].pct - dPct;
+
+                    const minLeft = getModuleMin(_mlpDragSlots[leftIdx].moduleId);
+                    const minRight = getModuleMin(_mlpDragSlots[rightIdx].moduleId);
+
+                    if (newLeft < minLeft) { newRight += (newLeft - minLeft); newLeft = minLeft; }
+                    if (newRight < minRight) { newLeft += (newRight - minRight); newRight = minRight; }
+                    if (newLeft < minLeft || newRight < minRight) return;
+
+                    _mlpDragSlots[leftIdx].pct = Math.round(newLeft * 10) / 10;
+                    _mlpDragSlots[rightIdx].pct = Math.round(newRight * 10) / 10;
+
+                    const total = _mlpDragSlots.reduce((s, x) => s + x.pct, 0);
+                    if (Math.abs(total - 100) > 0.01) {
+                        _mlpDragSlots[rightIdx].pct += Math.round((100 - total) * 10) / 10;
+                    }
+
+                    updateDragUI();
+                }
+
+                function onUp() {
+                    isDragging = false;
+                    handle.classList.remove('dragging');
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                    document.removeEventListener('mousemove', onMove);
+                    document.removeEventListener('mouseup', onUp);
+                    document.removeEventListener('touchmove', onMove);
+                    document.removeEventListener('touchend', onUp);
+                }
+
+                handle.replaceWith(handle.cloneNode(true));
+                const newHandle = document.getElementById('mlpDragHandle' + handleIdx);
+                newHandle.addEventListener('mousedown', onDown);
+                newHandle.addEventListener('touchstart', onDown, { passive: false });
             });
         }
 
-        if (resetRightBtn) {
-            resetRightBtn.addEventListener('mousedown', (e) => e.stopPropagation());
-            resetRightBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const w1 = middleSection.children[0].getBoundingClientRect().width;
-                const pool = middleSection.children[2].getBoundingClientRect().width
-                           + middleSection.children[4].getBoundingClientRect().width;
-                const t2 = pool * (2 / 3);
-                const t3 = pool * (1 / 3);
-                middleSection.style.transition = 'grid-template-columns 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)';
-                middleSection.style.setProperty('--col1', w1 + 'px');
-                middleSection.style.setProperty('--col2', t2 + 'px');
-                middleSection.style.setProperty('--col3', t3 + 'px');
-                setTimeout(() => {
-                    middleSection.style.transition = '';
-                    middleSection.style.setProperty('--col1', w1 + 'fr');
-                    middleSection.style.setProperty('--col2', t2 + 'fr');
-                    middleSection.style.setProperty('--col3', t3 + 'fr');
-                    updateChart?.();
-                }, 400);
-            });
-        }
+        // --- Kaydet ---
+        window.applyMiddleLayout = function() {
+            var total = Math.round(_mlpDragSlots.reduce(function(s, x) { return s + x.pct; }, 0) * 10) / 10;
+            if (Math.abs(total - 100) > 0.05) return;
+            var ids = _mlpDragSlots.map(function(s) { return s.moduleId; });
+            if (new Set(ids).size !== ids.length) { alert('Her modül yalnızca bir alana atanabilir!'); return; }
+            window.middleLayout = { slots: JSON.parse(JSON.stringify(_mlpDragSlots)) };
+            localStorage.setItem('middleLayout', JSON.stringify(window.middleLayout));
+            applyMiddleVisibility();
+            window.closeMiddleLayoutPanel();
+        };
 
         // --- ÖZEL TARİH SEÇİCİ (NATIVE TOOLTIP İPTALİ) MOTORU ---
         document.querySelectorAll('input[type="date"]').forEach(dateInput => {
@@ -9730,7 +10195,7 @@
             <a href="denemeanaliz.html" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Deneme Analiz</a>
             <a href="playlistmerkezi.html" class="menu-item"><i class="fa-brands fa-youtube" style="color:#ff3333;"></i> Playlist Merkezi</a>
             <a href="profilayarlar.html" class="menu-item" id="sideMenuProfileBtn"><i class="fa-solid fa-user-gear"></i> Profil / Ayarlar</a>
-            <a href="admin.html" class="menu-item"><i class="fa-solid fa-shield-halved"></i> Admin Paneli</a>
+            <a href="admin.html" class="menu-item" id="sideMenuAdminBtn" style="display:none;"><i class="fa-solid fa-shield-halved"></i> Admin Paneli</a>
             <div style="display: flex; gap: 8px; width: 100%;">
                 <a href="index.html?action=login" class="menu-item" id="sideMenuLoginBtn" style="display: none; flex: 1; justify-content: center; padding-left: 0; padding-right: 0; font-size: 14px; color: var(--color-primary);"><i class="fa-solid fa-right-to-bracket"></i> Giriş Yap</a>
                 <a href="index.html?action=register" class="menu-item" id="sideMenuRegisterBtn" style="display: none; flex: 1; justify-content: center; padding-left: 0; padding-right: 0; font-size: 14px; color: var(--color-primary);"><i class="fa-solid fa-user-plus"></i> Kaydol</a>
@@ -10400,8 +10865,64 @@
         </div>
     </div>
 
+    <!-- ======= ORTA KISIM DÜZEN AYAR PANELİ ======= -->
+    <div id="mlpBackdrop" onclick="window.closeMiddleLayoutPanel()"></div>
+    <div id="middleLayoutPanel">
+        <div class="mlp-backdrop" onclick="window.closeMiddleLayoutPanel()"></div>
+        <div class="mlp-box">
+            <div class="mlp-title">
+                <i class="fa-solid fa-columns"></i> Orta Alan Düzeni
+            </div>
+            <div class="mlp-subtitle">Modülleri seçin, çubukları sürükleyerek veya alttaki sayıları değiştirerek boyutları ayarlayın.</div>
+
+            <!-- Modül Seçiciler -->
+            <div style="display:flex; gap:10px; margin-bottom:16px;">
+                <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+                    <span style="font-size:11px; font-weight:800; color:var(--color-primary); text-align:center;">SOL</span>
+                    <select id="mlpDragSelLeft" class="mlp-drag-select"></select>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+                    <span style="font-size:11px; font-weight:800; color:var(--color-primary); text-align:center;">ORTA</span>
+                    <select id="mlpDragSelCenter" class="mlp-drag-select"></select>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:6px;">
+                    <span style="font-size:11px; font-weight:800; color:var(--color-primary); text-align:center;">SAĞ</span>
+                    <select id="mlpDragSelRight" class="mlp-drag-select"></select>
+                </div>
+            </div>
+
+            <!-- Sürüklenebilir Önizleme -->
+            <div id="mlpDragArea" style="display:flex; height:200px; border-radius:var(--radius-xl); overflow:hidden; border:2px solid var(--color-border-medium); background:var(--color-bg-input); user-select:none; position:relative; box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);">
+                <div id="mlpDragBox0" class="mlp-drag-box">
+                    <i id="mlpDragIcon0" class="fa-solid fa-chart-line" style="font-size:24px; opacity:0.8;"></i>
+                    <span id="mlpDragLabel0" style="font-size:12px; font-weight:800; margin-top:6px;">Denemelerim</span>
+                    <span id="mlpDragPct0" style="font-size:13px; font-weight:900; opacity:0.5; margin-top:2px;">%30</span>
+                </div>
+                <div id="mlpDragHandle0" class="mlp-drag-handle"><div class="mlp-drag-handle-line"></div></div>
+                <div id="mlpDragBox1" class="mlp-drag-box">
+                    <i id="mlpDragIcon1" class="fa-solid fa-calendar-day" style="font-size:24px; opacity:0.8;"></i>
+                    <span id="mlpDragLabel1" style="font-size:12px; font-weight:800; margin-top:6px;">Ders Programı</span>
+                    <span id="mlpDragPct1" style="font-size:13px; font-weight:900; opacity:0.5; margin-top:2px;">%45</span>
+                </div>
+                <div id="mlpDragHandle1" class="mlp-drag-handle"><div class="mlp-drag-handle-line"></div></div>
+                <div id="mlpDragBox2" class="mlp-drag-box">
+                    <i id="mlpDragIcon2" class="fa-solid fa-pen-to-square" style="font-size:24px; opacity:0.8;"></i>
+                    <span id="mlpDragLabel2" style="font-size:12px; font-weight:800; margin-top:6px;">Notlarım</span>
+                    <span id="mlpDragPct2" style="font-size:13px; font-weight:900; opacity:0.5; margin-top:2px;">%25</span>
+                </div>
+            </div>
+
+            <!-- Sayı Girişleri -->
+            <div id="mlpNumRow" style="display:flex; gap:10px; margin-top:14px;"></div>
+
+            <div class="mlp-footer">
+                <button class="cancel-note-btn" onclick="window.closeMiddleLayoutPanel()" style="padding:10px 20px; font-size:13px; border-radius: var(--radius-md);">Kapat</button>
+                <button class="save-note-btn" id="mlpApplyBtn" onclick="window.applyMiddleLayout()" style="padding:10px 24px; font-size:13px; border-radius: var(--radius-md);"><i class="fa-solid fa-check" style="margin-right:6px;"></i> Kaydet ve Uygula</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-    // ======= SAAT WİDGET'I: GÖREV BAĞLAMA =======
 
     // Seçili görev state'i
     let _clkLinkedTask = null; // { task, dateKey, mode: 'sw'|'tm', originalDuration }
