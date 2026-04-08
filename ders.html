@@ -3535,13 +3535,14 @@
     <div id="examModal" class="custom-modal" style="z-index:3300;">
         <style>
             #examModalBodyFlex { flex-direction: row; }
-            /* Sağ taraftaki ders listesinin 340px'de sabit kalıp scroll olmasını sağlar */
             #examModalRightCol .subject-inputs-container { max-height: 340px; overflow-y: auto; padding-right: 8px; }
             @media (max-width: 800px) {
                 #examModalBodyFlex { flex-direction: column; overflow-y: auto; }
-                #examModalRightCol { overflow-y: visible !important; }
             }
             .modal-input.error-border { border-color: var(--color-danger) !important; box-shadow: 0 0 0 3px rgba(217,83,79,0.15) !important; }
+            .track-switch-container { display: flex; background-color: var(--color-bg-input); border-radius: 10px; padding: 4px; border: 1px solid var(--color-border); }
+            .track-btn { flex: 1; border: none; background: transparent; padding: 8px 0; font-size: 13px; font-weight: 800; color: var(--color-text-muted); border-radius: 8px; cursor: pointer; transition: var(--transition-fast); }
+            .track-btn.active { background-color: var(--color-primary); color: #fff; box-shadow: 0 2px 8px rgba(0,123,255,0.3); }
         </style>
         <div class="custom-modal-content" style="max-width:1000px; max-height:90vh; display:flex; flex-direction:column; background:var(--color-bg-page);">
             <div class="modal-header" style="background:var(--color-bg-card); border-bottom:1px solid #eef2f5;">
@@ -3551,6 +3552,7 @@
             
             <div class="modal-body" id="examModalBodyFlex" style="display:flex; gap:25px; overflow:hidden; flex:1; padding:25px;">
                 
+                <!-- SOL SÜTUN -->
                 <div style="flex:1; display:flex; flex-direction:column; gap:20px; overflow-y:auto; padding-right:5px;">
                     <div class="exam-tabs" style="background:var(--color-bg-card); padding:5px; border-radius:12px; display:flex; box-shadow:var(--shadow-xs); margin:0;">
                         <button class="exam-tab-btn active" data-target="tyt-section" style="flex:1; border:none; padding:10px 0; border-radius:8px; font-size:14px; margin:0;">TYT Denemesi</button>
@@ -3558,6 +3560,8 @@
                     </div>
                     
                     <div style="background:var(--color-bg-card); padding:18px; border-radius:14px; box-shadow:var(--shadow-xs); display:flex; flex-direction:column; gap:15px;">
+                        
+                        <!-- İSİM VE TARİH YAN YANA -->
                         <div style="display:flex; gap:15px;">
                             <div class="input-group" style="flex:2;">
                                 <label>Deneme Adı <span class="required-star">*</span></label>
@@ -3568,7 +3572,8 @@
                                 <input type="date" id="examDateInput" class="modal-input" style="background:var(--color-bg-input); border-color:var(--color-border);">
                             </div>
                         </div>
-
+                        
+                        <!-- HATA MESAJI -->
                         <div id="examErrorMsg" class="error-msg" style="margin-top:-5px; text-align:left; display:none;"></div>
                         
                         <div id="aytTrackContainer" style="display:none;">
@@ -3583,7 +3588,7 @@
                         </div>
                     </div>
                     
-                    <div style="flex:1;"></div> 
+                    <div style="flex:1;"></div>
                     
                     <div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));padding:20px;border-radius:14px;box-shadow:var(--shadow-primary);color:white; margin-top:10px;">
                         <div style="display:flex;align-items:center;gap:15px;">
@@ -3597,16 +3602,15 @@
                     </div>
                 </div>
 
-                <div id="examModalRightCol" style="flex:1.2; display:flex; flex-direction:column; background:var(--color-bg-card); padding:20px; border-radius:14px; box-shadow:var(--shadow-xs); overflow:hidden;">
+                <!-- SAĞ SÜTUN -->
+                <div id="examModalRightCol" style="flex:1.2; display:flex; flex-direction:column; background:var(--color-bg-card); padding:20px; border-radius:14px; box-shadow:var(--shadow-xs);">
                     <h4 style="font-size:15px; font-weight:800; color:var(--color-text-secondary); margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid var(--color-border);"><i class="fa-solid fa-list-check" style="color:var(--color-primary); margin-right:8px;"></i> Ders Sonuçları</h4>
                     
-                    <div class="subject-inputs-container">
-                        <div id="tyt-section">
-                            <div id="tyt-subjects-container"></div>
-                        </div>
-                        <div id="ayt-section" style="display:none;">
-                            <div id="ayt-subjects-container"></div>
-                        </div>
+                    <div id="tyt-section">
+                        <div id="tyt-subjects-container" class="subject-inputs-container"></div>
+                    </div>
+                    <div id="ayt-section" style="display:none;">
+                        <div id="ayt-subjects-container" class="subject-inputs-container"></div>
                     </div>
                 </div>
                 
@@ -6243,106 +6247,114 @@
             }
         };
 
+        // Ders satırlarını üreten fonksiyon (denemeanaliz.html versiyonu - .dyb-d/.dyb-y/.dyb-b class'ları)
+        function buildSubjectRows(containerId, subjects) {
+            const c = document.getElementById(containerId);
+            if (!c) return;
+            c.innerHTML = '';
+            subjects.forEach(name => {
+                const limit = subjectLimits[name] || 40;
+                c.innerHTML += `<div class="subject-input-row" data-subject="${name}" data-limit="${limit}"><span class="subject-name">${name}</span><div class="dyb-inputs"><div class="dyb-box"><label>D</label><input type="number" class="dyb-input dyb-d" min="0" max="${limit}" placeholder="0"></div><div class="dyb-box"><label>Y</label><input type="number" class="dyb-input dyb-y" min="0" max="${limit}" placeholder="0"></div><div class="dyb-box"><label>B</label><input type="number" class="dyb-input dyb-b" min="0" max="${limit}" placeholder="0"></div></div></div>`;
+            });
+        }
+
+        // TYT varsayılan satırları oluştur
+        buildSubjectRows('tyt-subjects-container', examSubjectsData.tyt);
+
         // Canlı Net Hesaplama Fonksiyonu
         function calculateTotalNet() {
-            const activeTab = document.querySelector('.exam-tab-btn.active').getAttribute('data-target');
+            const activeTab = document.querySelector('#examModal .exam-tab-btn.active')?.getAttribute('data-target');
             const container = document.getElementById(activeTab === 'tyt-section' ? 'tyt-subjects-container' : 'ayt-subjects-container');
-            
+            if (!container) return;
             let totalNet = 0;
-            const rows = container.querySelectorAll('.subject-input-row');
-            
-            rows.forEach(row => {
-                const d = parseInt(row.querySelector('.correct-input').value) || 0;
-                const y = parseInt(row.querySelector('.incorrect-input').value) || 0;
-                totalNet += (d - (y * 0.25)); // 1 Doğru = +1 Net, 1 Yanlış = -0.25 Net
+            container.querySelectorAll('.subject-input-row').forEach(row => {
+                const d = parseInt(row.querySelector('.dyb-d')?.value) || 0;
+                const y = parseInt(row.querySelector('.dyb-y')?.value) || 0;
+                totalNet += d - (y * 0.25);
             });
-
-            totalNetValue.innerText = totalNet.toFixed(2); // Virgülden sonra 2 hane gösterir
+            const el = document.getElementById('totalNetValue');
+            if (el) el.innerText = totalNet.toFixed(2);
         }
 
-        // Derslerin HTML Satırlarını Üreten Fonksiyon (Limitlerle Birlikte)
-        function generateSubjectInputs(subjects, containerId) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            
-            subjects.forEach(subject => {
-                const limit = subjectLimits[subject];
-                container.innerHTML += `
-                    <div class="subject-input-row" data-limit="${limit}" data-subject="${subject}">
-                        <div style="display:flex; flex-direction:column; flex:1;">
-                            <span class="subject-name">${subject}</span>
-                            <span style="font-size:10px; color:#888; margin-top:2px;">(Max: ${limit} Soru)</span>
-                        </div>
-                        <div class="dyb-inputs">
-                            <div class="dyb-box">
-                                <label>D</label>
-                                <input type="number" min="0" max="${limit}" placeholder="0" class="dyb-input correct-input">
-                            </div>
-                            <div class="dyb-box">
-                                <label>Y</label>
-                                <input type="number" min="0" max="${limit}" placeholder="0" class="dyb-input incorrect-input">
-                            </div>
-                            <div class="dyb-box">
-                                <label>B</label>
-                                <input type="number" min="0" max="${limit}" placeholder="0" class="dyb-input blank-input">
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            // Girdileri Dinleyen Matematik ve Koruma Kalkanı (Yeni Sistem)
-            const inputs = container.querySelectorAll('.dyb-input');
-            inputs.forEach(input => {
-                input.addEventListener('input', (e) => {
-                    if(parseInt(e.target.value) < 0) e.target.value = 0; // Negatif girmeyi engelle
-
-                    const row = e.target.closest('.subject-input-row');
-                    const limit = parseInt(row.getAttribute('data-limit'));
-                    const subjectName = row.getAttribute('data-subject');
-                    
-                    let d = parseInt(row.querySelector('.correct-input').value) || 0;
-                    let y = parseInt(row.querySelector('.incorrect-input').value) || 0;
-                    let b = parseInt(row.querySelector('.blank-input').value) || 0;
-
-                    // KORUMA KALKANI: Toplam sayı limiti aşarsa?
-                    if ((d + y + b) > limit) {
-                        const currentVal = parseInt(e.target.value) || 0;
-                        const otherSum = (d + y + b) - currentVal;
-                        let maxAllowed = limit - otherSum;
-                        
-                        if(maxAllowed < 0) maxAllowed = 0;
-                        e.target.value = maxAllowed; 
-                        
-                        // Limiti aşınca hata mesajı (Toast) göster
-                        if(typeof window.showCustomToast === 'function') {
-                            window.showCustomToast('Sınır Aşıldı!', `${subjectName} toplamı en fazla ${limit} olabilir.`, 'error');
-                        } else {
-                            // Eğer toast yoksa alt kısımdaki hata barını kullan
-                            const examErrorMsg = document.getElementById('examErrorMsg');
-                            if (examErrorMsg) {
-                                examErrorMsg.innerText = `${subjectName} için D+Y+B toplamı en fazla ${limit} olabilir!`;
-                                examErrorMsg.style.display = 'block';
-                                setTimeout(() => examErrorMsg.style.display = 'none', 3000);
-                            }
+        // DYB input dinleyici - soru sınırı koruma kalkanı
+        document.addEventListener('input', e => {
+            if (e.target.classList.contains('dyb-input')) {
+                if (parseInt(e.target.value) < 0) e.target.value = 0;
+                const row = e.target.closest('.subject-input-row');
+                const limit = parseInt(row.getAttribute('data-limit'));
+                const subjectName = row.querySelector('.subject-name').innerText;
+                let d = parseInt(row.querySelector('.dyb-d').value) || 0;
+                let y = parseInt(row.querySelector('.dyb-y').value) || 0;
+                let b = parseInt(row.querySelector('.dyb-b').value) || 0;
+                if (d + y + b > limit) {
+                    const currentVal = parseInt(e.target.value) || 0;
+                    const otherSum = (d + y + b) - currentVal;
+                    let maxAllowed = limit - otherSum;
+                    if (maxAllowed < 0) maxAllowed = 0;
+                    e.target.value = maxAllowed;
+                    if (typeof window.showCustomToast === 'function') {
+                        window.showCustomToast('Sınır Aşıldı!', `${subjectName} için D+Y+B toplamı en fazla ${limit} olabilir.`, 'error');
+                    } else {
+                        const errEl = document.getElementById('examErrorMsg');
+                        if (errEl) {
+                            errEl.innerText = `${subjectName} için D+Y+B toplamı en fazla ${limit} olabilir!`;
+                            errEl.style.display = 'block';
+                            setTimeout(() => errEl.style.display = 'none', 3000);
                         }
                     }
-                    
-                    calculateTotalNet(); // Rakam her değiştiğinde neti anında güncelle!
-                });
+                }
+                calculateTotalNet();
+            }
+        });
+
+        // TAB DEĞİŞTİRME (examModal içi)
+        document.querySelectorAll('#examModal .exam-tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#examModal .exam-tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const target = btn.getAttribute('data-target');
+                document.getElementById('tyt-section').style.display = target === 'tyt-section' ? 'block' : 'none';
+                document.getElementById('ayt-section').style.display = target === 'ayt-section' ? 'block' : 'none';
+                document.getElementById('aytTrackContainer').style.display = target === 'ayt-section' ? 'block' : 'none';
+                if (target === 'ayt-section') {
+                    const track = document.getElementById('aytTrackSelect').value;
+                    buildSubjectRows('ayt-subjects-container', examSubjectsData.ayt[track] || []);
+                }
+                calculateTotalNet();
             });
-        }
+        });
+
+        // ALAN SWITCH BUTONLARI (SAY/EA/SÖZ/DİL)
+        document.addEventListener('click', e => {
+            const btn = e.target.closest('.track-btn');
+            if (btn) {
+                const container = btn.closest('.track-switch-container');
+                const hiddenInput = container.nextElementSibling;
+                container.querySelectorAll('.track-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                hiddenInput.value = btn.getAttribute('data-val');
+                hiddenInput.dispatchEvent(new Event('change'));
+            }
+        });
+
+        document.getElementById('aytTrackSelect')?.addEventListener('change', e => {
+            const val = e.target.value;
+            buildSubjectRows('ayt-subjects-container', examSubjectsData.ayt[val] || []);
+            calculateTotalNet();
+        });
 
         // Modal Açıldığında Çalışacaklar
         openExamModalBtn.addEventListener('click', () => {
-            generateSubjectInputs(examSubjectsData.tyt, 'tyt-subjects-container');
-            generateSubjectInputs(examSubjectsData.ayt.sayisal, 'ayt-subjects-container');
-            aytTrackSelect.value = 'sayisal';
+            buildSubjectRows('tyt-subjects-container', examSubjectsData.tyt);
+            buildSubjectRows('ayt-subjects-container', examSubjectsData.ayt.sayisal);
+            document.getElementById('aytTrackSelect').value = 'sayisal';
+            document.querySelectorAll('#examModal .track-btn').forEach(b => b.classList.toggle('active', b.getAttribute('data-val') === 'sayisal'));
+            document.querySelectorAll('#examModal .exam-tab-btn')[0].click();
             
             DOM.examTitleInput.value = '';
             DOM.examDateInput.value = '';
             examErrorMsg.style.display = 'none';
-            totalNetValue.innerText = "0.00"; // Neti sıfırla
+            document.getElementById('totalNetValue').innerText = "0.00";
             
             examModal.style.display = 'flex';
         });
@@ -6378,7 +6390,7 @@
                 document.getElementById('aytTrackSelect').value = this.dataset.val;
                 
                 // Yeni alana göre dersleri tekrar oluştur
-                generateSubjectInputs(examSubjectsData.ayt[this.dataset.val], 'ayt-subjects-container');
+                buildSubjectRows('ayt-subjects-container', examSubjectsData.ayt[this.dataset.val]);
                 calculateTotalNet();
             });
         });
@@ -6628,9 +6640,9 @@
             // Önce ders kutularını ilgili alana göre oluşturuyoruz
             if (currentViewingExam.type === 'ayt') {
                 document.getElementById('aytTrackSelect').value = currentViewingExam.track;
-                generateSubjectInputs(examSubjectsData.ayt[currentViewingExam.track], 'ayt-subjects-container');
+                buildSubjectRows('ayt-subjects-container', examSubjectsData.ayt[currentViewingExam.track]);
             } else {
-                generateSubjectInputs(examSubjectsData.tyt, 'tyt-subjects-container');
+                buildSubjectRows('tyt-subjects-container', examSubjectsData.tyt);
             }
 
             DOM.examTitleInput.value = currentViewingExam.title;
@@ -6643,9 +6655,9 @@
                 currentViewingExam.subjects.forEach(sub => {
                     const row = container.querySelector(`.subject-input-row[data-subject="${sub.name}"]`);
                     if (row) {
-                        if(sub.d > 0) row.querySelector('.correct-input').value = sub.d;
-                        if(sub.y > 0) row.querySelector('.incorrect-input').value = sub.y;
-                        if(sub.b > 0) row.querySelector('.blank-input').value = sub.b;
+                        if(sub.d > 0) row.querySelector('.dyb-d').value = sub.d;
+                        if(sub.y > 0) row.querySelector('.dyb-y').value = sub.y;
+                        if(sub.b > 0) row.querySelector('.dyb-b').value = sub.b;
                     }
                 });
             }
@@ -6804,9 +6816,9 @@
             
             rows.forEach(row => {
                 const subjectName = row.getAttribute('data-subject');
-                const d = parseInt(row.querySelector('.correct-input').value) || 0;
-                const y = parseInt(row.querySelector('.incorrect-input').value) || 0;
-                const b = parseInt(row.querySelector('.blank-input').value) || 0;
+                const d = parseInt(row.querySelector('.dyb-d').value) || 0;
+                const y = parseInt(row.querySelector('.dyb-y').value) || 0;
+                const b = parseInt(row.querySelector('.dyb-b').value) || 0;
                 const net = d - (y * 0.25);
                 subjectsData.push({ name: subjectName, d: d, y: y, b: b, net: net });
             });
@@ -9718,6 +9730,7 @@
             <a href="denemeanaliz.html" class="menu-item"><i class="fa-solid fa-chart-pie"></i> Deneme Analiz</a>
             <a href="playlistmerkezi.html" class="menu-item"><i class="fa-brands fa-youtube" style="color:#ff3333;"></i> Playlist Merkezi</a>
             <a href="profilayarlar.html" class="menu-item" id="sideMenuProfileBtn"><i class="fa-solid fa-user-gear"></i> Profil / Ayarlar</a>
+            <a href="admin.html" class="menu-item"><i class="fa-solid fa-shield-halved"></i> Admin Paneli</a>
             <div style="display: flex; gap: 8px; width: 100%;">
                 <a href="index.html?action=login" class="menu-item" id="sideMenuLoginBtn" style="display: none; flex: 1; justify-content: center; padding-left: 0; padding-right: 0; font-size: 14px; color: var(--color-primary);"><i class="fa-solid fa-right-to-bracket"></i> Giriş Yap</a>
                 <a href="index.html?action=register" class="menu-item" id="sideMenuRegisterBtn" style="display: none; flex: 1; justify-content: center; padding-left: 0; padding-right: 0; font-size: 14px; color: var(--color-primary);"><i class="fa-solid fa-user-plus"></i> Kaydol</a>
