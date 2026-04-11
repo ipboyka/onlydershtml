@@ -3343,8 +3343,8 @@
 
         <div id="clkFaceClock" style="flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; min-height:0; padding:10px 10px 20px;">
             <div style="position: relative; display: flex; align-items: flex-end;">
-                <div id="clkTime" style="font-size:clamp(48px, 7vw, 76px); font-weight:900; background: linear-gradient(135deg, var(--color-text-main) 0%, var(--color-text-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing:1px; font-variant-numeric:tabular-nums; line-height:1; drop-shadow: 0 4px 10px rgba(0,0,0,0.05);"></div>
-                <div id="clkSeconds" style="font-size:clamp(16px, 2.5vw, 24px); font-weight:800; color:var(--color-primary); letter-spacing:1px; font-variant-numeric:tabular-nums; margin-left: 5px; margin-bottom: 8px; text-shadow: 0 2px 5px rgba(0,123,255,0.2);"></div>
+                <div id="clkTime" style="font-size:clamp(48px, 7vw, 76px); font-weight:900; background: linear-gradient(135deg, var(--color-text-main) 0%, var(--color-text-secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing:1px; font-variant-numeric:tabular-nums; line-height:1; drop-shadow: 0 4px 10px rgba(0,0,0,0.05); font-family: 'Segoe UI', monospace; display:flex; align-items:baseline;"><span id="clkHour" style="display:inline-block; text-align:right; min-width:1.25em;">00</span><span style="display:inline-block; text-align:center; min-width:0.35em;">:</span><span id="clkMin" style="display:inline-block; text-align:left; min-width:1.25em;">00</span></div>
+                <div id="clkSeconds" style="font-size:clamp(16px, 2.5vw, 24px); font-weight:800; color:var(--color-primary); letter-spacing:1px; font-variant-numeric:tabular-nums; margin-left: 2px; margin-bottom: 8px; text-shadow: 0 2px 5px rgba(0,123,255,0.2); display:inline-block; text-align:left; min-width:1.6em; font-family: 'Segoe UI', monospace;"></div>
             </div>
             <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 5px; background: var(--color-bg-input); padding: 8px 20px; border-radius: 50px; border: 1px solid var(--color-border);">
                 <div id="clkDate" style="font-size:14px; font-weight:800; color:var(--color-primary);"></div>
@@ -3526,8 +3526,8 @@
 
                 <div id="clkFsModeClock" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; z-index: 1;">
                     <div style="display: flex; align-items: flex-end;">
-                        <div id="clkFsTime" style="font-size:clamp(100px, 18vw, 220px); font-weight:900; background: linear-gradient(180deg, #ffffff 0%, #aaaaaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing:4px; font-variant-numeric:tabular-nums; line-height:0.9; drop-shadow: 0 10px 30px rgba(0,0,0,0.5);"></div>
-                        <div id="clkFsSeconds" style="font-size:clamp(30px, 6vw, 70px); font-weight:800; color:var(--color-primary); letter-spacing:2px; font-variant-numeric:tabular-nums; margin-left: 15px; margin-bottom: 20px; text-shadow: 0 4px 15px rgba(0,123,255,0.3);"></div>
+                        <div id="clkFsTime" style="font-size:clamp(100px, 18vw, 220px); font-weight:900; background: linear-gradient(180deg, #ffffff 0%, #aaaaaa 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing:4px; font-variant-numeric:tabular-nums; line-height:0.9; drop-shadow: 0 10px 30px rgba(0,0,0,0.5); font-family: 'Segoe UI', monospace; display:flex; align-items:baseline;"><span id="clkFsHour" style="display:inline-block; text-align:right; min-width:1.25em;">00</span><span style="display:inline-block; text-align:center; min-width:0.35em;">:</span><span id="clkFsMin" style="display:inline-block; text-align:left; min-width:1.25em;">00</span></div>
+                        <div id="clkFsSeconds" style="font-size:clamp(30px, 6vw, 70px); font-weight:800; color:var(--color-primary); letter-spacing:2px; font-variant-numeric:tabular-nums; margin-left: 5px; margin-bottom: 20px; text-shadow: 0 4px 15px rgba(0,123,255,0.3); display:inline-block; text-align:left; min-width:1.6em; font-family: 'Segoe UI', monospace;"></div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 15px; margin-top: 15px; background: rgba(255,255,255,0.03); padding: 12px 30px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.05);">
                         <div id="clkFsDate" style="font-size:clamp(18px, 3vw, 32px); font-weight:800; color:#e0e0e0;"></div>
@@ -3985,8 +3985,8 @@
 
 
     <div id="addTaskModal" class="custom-modal" style="z-index: 2500;">
-        <div class="custom-modal-content" id="addTaskModalContent" style="max-width: 520px; display: flex; flex-direction: row; gap: 0; padding: 0; overflow: hidden; transition: max-width 0.3s ease;">
-            <div id="addTaskMainPanel" style="width: 520px; flex-shrink: 0; display: flex; flex-direction: column;">
+        <div class="custom-modal-content" id="addTaskModalContent" style="max-width: 520px; display: flex; flex-direction: row; gap: 0; padding: 0; overflow: hidden; transition: max-width 0.3s ease; max-height: 90vh;">
+            <div id="addTaskMainPanel" style="width: 520px; flex-shrink: 0; display: flex; flex-direction: column; overflow-y: auto;">
                 
                 <div class="modal-header">
                     <h3><i class="fa-solid fa-list-check" class="icon-btn-primary"></i> Yeni Görev Ekle</h3>
@@ -4134,7 +4134,7 @@
             </div><!-- /addTaskMainPanel -->
 
             <!-- SAĞ VİDEO PANELİ -->
-            <div id="taskVideoPanel" style="display: none; width: 480px; flex-shrink: 0; border-left: 1px solid var(--color-border); flex-direction: column; background: var(--color-bg-card); overflow: hidden;">
+            <div id="taskVideoPanel" style="display: none; width: 480px; flex-shrink: 0; border-left: 1px solid var(--color-border); flex-direction: column; background: var(--color-bg-card); overflow: hidden; min-height: 0;">
                 <div id="taskVideoPanelHeader" style="display: flex; justify-content: space-between; align-items: center; padding: 16px 14px; border-bottom: 1px solid var(--color-border); flex-shrink: 0;">
                     <div id="taskVideoPanelTitle" style="font-size: 15px; font-weight: 800; color: var(--color-text-main); display: flex; align-items: center; gap: 8px;">
                         <i class="fa-brands fa-youtube" style="color:#ff0000; font-size:18px;"></i>
@@ -4143,7 +4143,9 @@
                     <div style="display: flex; align-items: center; gap: 8px;" id="taskVideoPanelActions"></div>
                 </div>
                 
-                <div id="taskVideoPanelBody" style="flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 0; min-height: 60px;"></div>
+                <div id="taskVideoPanelBodyWrapper" style="flex: 1; display: flex; flex-direction: column; min-height: 0;">
+                    <div id="taskVideoPanelBody" style="overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 0; min-height: 0; flex: 1; max-height: none;"></div>
+                </div>
                 
                 <div id="taskVideoPanelSummary" style="display: none; flex-shrink: 0; padding: 10px 14px 12px 14px; background: var(--color-bg-card);">
                     <div style="background: var(--color-primary-lighter); border: 1px solid var(--color-primary-border); border-radius: var(--radius-lg); padding: 12px 14px; position: relative; overflow: hidden; box-shadow: 0 4px 10px rgba(0,123,255,0.05);">
@@ -5786,6 +5788,10 @@
 
             if (user) {
                 currentUserUid = user.uid;
+                window._currentUserUidForPlaylist = user.uid;
+                window._playlistSaveFn = async function(uid, plData) {
+                    await setDoc(doc(db, "users", uid, "userPlaylists", plData.id.toString()), plData);
+                };
 
                 if(document.getElementById('sideMenuProfileBtn')) document.getElementById('sideMenuProfileBtn').style.display = '';
                 if(document.getElementById('sideMenuLoginBtn')) document.getElementById('sideMenuLoginBtn').style.display = 'none';
@@ -5831,6 +5837,13 @@
                             }
                         }
                         // 👆👆👆 YENİ EKLENEN KISIM BİTTİ 👆👆👆
+
+                        // Mentörlük kilidi: kuralları cache'le
+                        if (userData.mentorRules) {
+                            window._mentorRulesCache = userData.mentorRules;
+                        } else {
+                            window._mentorRulesCache = {};
+                        }
 
                         // Konu tamamlanma verilerini yükle
                         window.completedTopics = userData.completedTopics || {};
@@ -8249,6 +8262,19 @@
             }
 
             viewTaskModal.style.display = 'flex';
+            
+            // Mentor kilidi: Görev mentor programına aitse ve düzenleme kilitliyse düzenle butonunu gizle
+            const _dersEditBtn = document.getElementById('editTaskBtn');
+            if (_dersEditBtn && currentViewingTask && currentViewingTask.profileId && currentViewingTask.profileId.startsWith('mentor_')) {
+                const _rKey = currentViewingTask.profileId;
+                if (window._mentorRulesCache && window._mentorRulesCache[_rKey] && window._mentorRulesCache[_rKey].editLocked === true) {
+                    _dersEditBtn.style.display = 'none';
+                } else {
+                    _dersEditBtn.style.display = '';
+                }
+            } else if (_dersEditBtn) {
+                _dersEditBtn.style.display = '';
+            }
         };
 
         document.getElementById('closeViewTaskModalBtn').addEventListener('click', () => viewTaskModal.style.display = 'none');
@@ -8276,9 +8302,10 @@
             document.querySelectorAll('.speed-opt').forEach(btn => btn.classList.remove('active'));
             const customInput    = DOM.customSpeedInput;
             const tvpCustomInput = document.getElementById('tvp-customSpeedInput');
-            const defaultBtn = document.querySelector(`.speed-opt[data-val="${currentTaskSpeed}"]`);
-            if(defaultBtn) {
-                defaultBtn.classList.add('active');
+            // Hem sol hem sağ paneldeki tüm eşleşen hız butonlarını seçili yap
+            const allMatchingBtns = document.querySelectorAll(`.speed-opt[data-val="${currentTaskSpeed}"]`);
+            if(allMatchingBtns.length > 0) {
+                allMatchingBtns.forEach(b => b.classList.add('active'));
                 [customInput, tvpCustomInput].forEach(inp => {
                     if (!inp) return;
                     inp.value = '';
@@ -8333,6 +8360,17 @@
                         window.renderPlaylistCardsForSelection(false, currentViewingTask.subject);
                     }
                     window.renderTaskVideoSummary(false);
+                    // Güvence: Panel açıldıktan sonra summary'nin kesin görünür olmasını sağla
+                    requestAnimationFrame(() => {
+                        const tvpSum = document.getElementById('taskVideoPanelSummary');
+                        if (tvpSum && currentTaskVideos && currentTaskVideos.length > 0) {
+                            const foot = document.getElementById('taskVideoPanelFooter');
+                            if (!foot || foot.style.display !== 'flex') {
+                                tvpSum.style.display = 'block';
+                                window.renderTaskVideoSummary(false);
+                            }
+                        }
+                    });
                 } else {
                     // Test çözümü falansa paneli gizli tutar
                     if (typeof closeTaskVideoPanel === 'function') closeTaskVideoPanel();
@@ -9113,65 +9151,90 @@
         const tvPanelConfirm = document.getElementById('taskVideoPanelConfirmBtn');
         const modalContent   = document.getElementById('addTaskModalContent');
 
+        // Sol panelin yüksekliğini dinleyip sağ paneli ona kilitleyen akıllı gözlemci
+        const addTaskMainPanel = document.getElementById('addTaskMainPanel');
+        if (addTaskMainPanel && tvPanel && modalContent) {
+            new ResizeObserver(() => {
+                // Modal açıksa sol panel ne kadar uzar/kısalırsa sağ paneli ona milimetrik kilitle
+                if (tvPanel.style.display === 'flex') {
+                    tvPanel.style.height = addTaskMainPanel.offsetHeight + 'px';
+                }
+            }).observe(addTaskMainPanel);
+        }
+
         function openTaskVideoPanel() {
+            if (!tvPanel || !modalContent) return;
             tvPanel.style.display = 'flex';
             tvPanel.style.flexDirection = 'column';
-            modalContent.style.maxWidth = '1000px'; // <-- BURAYI 1000px'e GERİ ALDIK
+            modalContent.style.maxWidth = '1000px';
             
-            // Panel yüksekliğini sol panelle eşitle - summary alta sabit yapışır
-            requestAnimationFrame(() => {
-                const mainPanel = document.getElementById('addTaskMainPanel');
-                if (mainPanel && mainPanel.offsetHeight > 0) {
-                    tvPanel.style.height = mainPanel.offsetHeight + 'px';
-                }
-            });
+            // YENİ: Panellerin birbirini zorla esnetmesini engelliyoruz!
+            modalContent.style.alignItems = 'flex-start';
+            
+            // Sağ panelin boyunu açıldığı an sol panelin gerçek boyuna eşitliyoruz
+            const mainPanel = document.getElementById('addTaskMainPanel');
+            if (mainPanel) {
+                tvPanel.style.height = mainPanel.offsetHeight + 'px';
+            }
         }
 
         function closeTaskVideoPanel() {
-            tvPanel.style.display = 'none';
-            tvPanel.style.height = '';
-            modalContent.style.maxWidth = '520px';
+            if (tvPanel) { 
+                tvPanel.style.display = 'none'; 
+                tvPanel.style.height = ''; 
+            }
+            if (modalContent) {
+                modalContent.style.maxWidth = '520px';
+                // Modal kapanınca eski esneme davranışını geri veriyoruz
+                modalContent.style.alignItems = 'stretch'; 
+            }
         }
 
         window.openAddNewPlaylistAndReturn = function() {
             window.isReturningToTaskPlaylistSelector = true;
-            // Panel açık kalır, arkada bekler
 
-            const currentSubject = document.getElementById('taskSubject')?.value;
-            const currentExamType = document.getElementById('taskExamType')?.value;
-            const currentTrack    = document.getElementById('taskTrack')?.value;
+            // Playlist ekleme modalını doğrudan aç
+            const addModal = document.getElementById('addPlaylistModal');
+            if(addModal) {
+                document.getElementById('plLinkInput').value='';
+                document.getElementById('plTitleInput').value='';
+                document.getElementById('plVideoTableBody').innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-text-light);">Link girip "Videoları Bul" butonuna basınız.</td></tr>';
+                document.getElementById('plConfirmSaveBtn').style.display='none';
+                addModal.style.display='flex';
 
-            document.getElementById('addNewPlaylistBtn').click();
+                // plSyncFromTask burada henüz tanımlı olmayabilir, inline olarak aynı mantığı uygula
+                const currentExamType = document.getElementById('taskExamType')?.value;
+                const currentTrack    = document.getElementById('taskTrack')?.value;
+                const currentSubject = document.getElementById('taskSubject')?.value;
+                const currentSubLesson = document.getElementById('taskSubLesson')?.value;
+                const lockRow = document.getElementById('plSelectorsRow');
 
-            const updateCustomSelectUI = (inputId, val) => {
-                const hiddenInput = document.getElementById(inputId);
-                if (!hiddenInput) return;
-                hiddenInput.value = val;
-                const wrapper = hiddenInput.closest('.task-custom-select');
-                if (!wrapper) return;
-                const options = wrapper.querySelectorAll('.tcs-option');
-                let foundText = val;
-                options.forEach(opt => {
-                    if (opt.getAttribute('data-value') === val) { opt.classList.add('selected'); foundText = opt.innerText; }
-                    else opt.classList.remove('selected');
-                });
-                const textSpan = wrapper.querySelector('.tcs-text');
-                if (textSpan) textSpan.innerText = foundText;
-            };
-
-            setTimeout(() => {
-                if (currentExamType) {
-                    updateCustomSelectUI('playlistExamType', currentExamType);
-                    const pTrackGroup = document.getElementById('playlistTrackGroup');
-                    if (currentExamType === 'ayt' && pTrackGroup) {
-                        pTrackGroup.style.display = 'flex';
-                        if (currentTrack) updateCustomSelectUI('playlistTrack', currentTrack);
-                    } else if (pTrackGroup) {
-                        pTrackGroup.style.display = 'none';
+                setTimeout(() => {
+                    if(currentExamType){
+                        document.getElementById('plExamType').value = currentExamType;
+                        const examTextEl = document.querySelector('#tcs-plExamType .tcs-text');
+                        if(examTextEl) examTextEl.textContent = currentExamType.toUpperCase();
+                        document.querySelectorAll('#tcs-plExamType .tcs-option').forEach(o => { o.classList.remove('selected'); if(o.getAttribute('data-value')===currentExamType) o.classList.add('selected'); });
+                        document.getElementById('plTrackGroup').style.display = currentExamType==='ayt'?'':'none';
+                        if(currentExamType==='ayt' && currentTrack){
+                            document.getElementById('plTrack').value = currentTrack;
+                            document.querySelectorAll('#tcs-plTrack .tcs-option').forEach(o => { o.classList.remove('selected'); if(o.getAttribute('data-value')===currentTrack) { o.classList.add('selected'); const t=document.querySelector('#tcs-plTrack .tcs-text'); if(t) t.textContent=o.textContent; } });
+                        }
+                        if(window._plUpdateSubjects) window._plUpdateSubjects();
                     }
-                }
-                if (currentSubject) updateCustomSelectUI('playlistSubject', currentSubject);
-            }, 150);
+                    if(currentSubject){
+                        setTimeout(() => {
+                            document.getElementById('plSubject').value = currentSubject;
+                            document.querySelectorAll('#tcs-plSubject .tcs-option').forEach(o => { o.classList.remove('selected'); if(o.getAttribute('data-value')===currentSubject) { o.classList.add('selected'); const t=document.querySelector('#tcs-plSubject .tcs-text'); if(t) t.textContent=o.textContent; } });
+                            if(window._plUpdateSubLessons) window._plUpdateSubLessons(currentSubject);
+                            if(currentSubLesson) {
+                                setTimeout(() => { const sl = document.getElementById('plSubLesson'); if(sl) sl.value = currentSubLesson; }, 30);
+                            }
+                        }, 50);
+                    }
+                    if(lockRow && currentExamType) { lockRow.style.pointerEvents='none'; lockRow.style.opacity='0.55'; lockRow.style.filter='grayscale(0.3)'; }
+                }, 100);
+            }
 
             const checkClose = setInterval(() => {
                 const modal = document.getElementById('addPlaylistModal');
@@ -9610,12 +9673,7 @@
             });
 
             const adjustedSec = Math.round(totalRawSec / currentTaskSpeed);
-            const formatSec = (sec) => {
-                const h = Math.floor(sec / 3600);
-                const m = Math.floor((sec % 3600) / 60);
-                if (h > 0) return `${h}s ${m}dk`;
-                return `${m} Dk`;
-            };
+            const formatSec = (sec) => { const h = Math.floor(sec / 3600); const m = Math.ceil((sec % 3600) / 60); if (h > 0) return `${h}s ${m}dk`; return `${m} Dk`; };
 
             const totalMins = Math.ceil(adjustedSec / 60);
             if (document.getElementById('pss-duration')) document.getElementById('pss-duration').textContent = formatSec(adjustedSec);
@@ -11184,12 +11242,14 @@
         const dateStr = now.getDate() + ' ' + CLK_MONTHS[now.getMonth()] + ' ' + now.getFullYear();
         const dayStr  = CLK_DAYS[now.getDay()];
         // Küçük widget
-        const t=document.getElementById('clkTime');     if(t) t.textContent = h+':'+m;
+        const _clkH=document.getElementById('clkHour');    if(_clkH) _clkH.textContent = h;
+        const _clkM=document.getElementById('clkMin');     if(_clkM) _clkM.textContent = m;
         const sc=document.getElementById('clkSeconds'); if(sc) sc.textContent = s;
         const d=document.getElementById('clkDate');     if(d) d.textContent = dateStr;
         const w=document.getElementById('clkDay');      if(w) w.textContent = dayStr;
         // Tam ekran
-        const T=document.getElementById('clkFsTime');     if(T) T.textContent = h+':'+m;
+        const _clkFsH=document.getElementById('clkFsHour');    if(_clkFsH) _clkFsH.textContent = h;
+        const _clkFsM=document.getElementById('clkFsMin');     if(_clkFsM) _clkFsM.textContent = m;
         const SC=document.getElementById('clkFsSeconds'); if(SC) SC.textContent = s;
         const D=document.getElementById('clkFsDate');     if(D) D.textContent = dateStr;
         const W=document.getElementById('clkFsDay');      if(W) W.textContent = dayStr;
@@ -11970,6 +12030,321 @@
         });
     </script>
 
+
+
+    <!-- ============ PLAYLİST EKLEME MODÜLÜ (ORTAK) ============ -->
+    <div class="custom-modal" id="addPlaylistModal" style="z-index:3800;">
+        <div class="custom-modal-content" style="max-width:600px;width:95%;">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-link" style="color:var(--color-primary);margin-right:8px;"></i> Playlist Aktar</h3>
+                <span class="close-modal-btn" id="closeAddPlaylistModalBtn">&times;</span>
+            </div>
+            <div class="modal-body" style="gap:15px;">
+                <div id="plSelectorsRow" style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
+                    <div class="input-group" style="flex:0 0 auto;min-width:100px;">
+                        <label>Sınav Türü</label>
+                        <div class="task-custom-select" id="tcs-plExamType">
+                            <div class="tcs-trigger"><span class="tcs-text">TYT</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="tcs-options">
+                                <div class="tcs-option selected" data-value="tyt">TYT</div>
+                                <div class="tcs-option" data-value="ayt">AYT</div>
+                            </div>
+                            <input type="hidden" id="plExamType" value="tyt">
+                        </div>
+                    </div>
+                    <div class="input-group" id="plTrackGroup" style="flex:0 0 auto;min-width:120px;display:none;">
+                        <label>Alan</label>
+                        <div class="task-custom-select" id="tcs-plTrack">
+                            <div class="tcs-trigger"><span class="tcs-text">Sayısal</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="tcs-options">
+                                <div class="tcs-option selected" data-value="sayisal">Sayısal</div>
+                                <div class="tcs-option" data-value="ea">Eşit Ağırlık</div>
+                                <div class="tcs-option" data-value="sozel">Sözel</div>
+                                <div class="tcs-option" data-value="dil">Yabancı Dil</div>
+                            </div>
+                            <input type="hidden" id="plTrack" value="sayisal">
+                        </div>
+                    </div>
+                    <div class="input-group" style="flex:1;min-width:130px;">
+                        <label>Ders Seçimi</label>
+                        <div class="task-custom-select" id="tcs-plSubject">
+                            <div class="tcs-trigger"><span class="tcs-text">Türkçe</span> <i class="fa-solid fa-chevron-down"></i></div>
+                            <div class="tcs-options" id="plDynamicSubjectOptions">
+                                <div class="tcs-option selected" data-value="Türkçe">Türkçe</div>
+                                <div class="tcs-option" data-value="Sosyal Bilimler">Sosyal Bilimler</div>
+                                <div class="tcs-option" data-value="Temel Matematik">Temel Matematik</div>
+                                <div class="tcs-option" data-value="Fen Bilimleri">Fen Bilimleri</div>
+                            </div>
+                            <input type="hidden" id="plSubject" value="Türkçe">
+                        </div>
+                    </div>
+                    <div class="input-group" id="plSubLessonGroup" style="flex:0 0 auto;min-width:130px;display:none;">
+                        <label>Alt Ders</label>
+                        <select id="plSubLesson" class="modal-input" style="padding:10px 12px;font-size:14px;font-weight:700;cursor:pointer;"></select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Playlist Adı <span style="color:var(--color-danger);">*</span></label>
+                    <input type="text" id="plTitleInput" class="modal-input" placeholder="Örn: Dr. Biyoloji Sistemler Kampı">
+                </div>
+                <div class="input-group">
+                    <label>YouTube Playlist Linki <span style="color:var(--color-danger);">*</span></label>
+                    <div style="display:flex;gap:10px;">
+                        <input type="text" id="plLinkInput" class="modal-input" placeholder="https://www.youtube.com/playlist?list=..." style="flex:1;">
+                        <button class="save-note-btn" id="plFetchBtn" style="flex-shrink:0;white-space:nowrap;"><i class="fa-solid fa-cloud-arrow-down"></i> Videoları Bul</button>
+                    </div>
+                </div>
+                <div style="max-height:220px;overflow-y:auto;border:1px solid #eef2f5;border-radius:10px;background:var(--color-primary-lighter);padding:10px;">
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead style="position:sticky;top:-10px;background:var(--color-primary-lighter);z-index:10;">
+                            <tr style="text-align:left;color:var(--color-text-secondary);border-bottom:2px solid var(--color-primary-border);">
+                                <th style="padding:8px;">Kapak</th><th style="padding:8px;">Video Adı</th><th style="padding:8px;width:60px;">Süre</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plVideoTableBody">
+                            <tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-text-light);">Link girip "Videoları Bul" butonuna basınız.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-note-btn" id="plCancelBtn">İptal</button>
+                <button class="save-note-btn" id="plConfirmSaveBtn" style="display:none;background-color:var(--color-success);"><i class="fa-solid fa-save" style="margin-right:6px;"></i> Listeyi Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // === PLAYLİST EKLEME MODÜLÜ JS ===
+    (function(){
+        const PL_YT_KEY = 'AIzaSyB8W8bN9pcrMuFfr3vSC-YqEPHq7hN93XQ';
+        function plExtractId(url){ const m=url.match(/[&?]list=([^&]+)/i); return m?m[1]:null; }
+        function plParseDur(d){ const m=d.match(/PT(\d+H)?(\d+M)?(\d+S)?/); const h=parseInt(m[1])||0,mi=parseInt(m[2])||0,s=parseInt(m[3])||0; let r=''; if(h>0)r+=h+':'; r+=(mi<10?'0'+mi:mi)+':'+(s<10?'0'+s:s); return r; }
+        function plParseSec(d){ const m=d.match(/PT(\d+H)?(\d+M)?(\d+S)?/); return(parseInt(m[1])||0)*3600+(parseInt(m[2])||0)*60+(parseInt(m[3])||0); }
+        function plFmtSec(t){ const h=Math.floor(t/3600),m=Math.floor(t%3600/60); return h>0?h+'s '+m+'dk':m+'dk'; }
+
+        const plSubLessonData = {"Sosyal Bilimler":["Genel","Tarih","Coğrafya","Felsefe","Din Kültürü ve Ahlak Bilgisi"],"Fen Bilimleri":["Genel","Fizik","Kimya","Biyoloji"]};
+
+        const addModal = document.getElementById('addPlaylistModal');
+        if(!addModal) return;
+
+        // Modal aç/kapa
+        // Modal aç/kapa handler'ları plSyncFromTask bölümünde tanımlandı
+
+        // Custom select'ler
+        ['tcs-plExamType','tcs-plTrack','tcs-plSubject'].forEach(id => {
+            const sel = document.getElementById(id); if(!sel) return;
+            const trigger = sel.querySelector('.tcs-trigger');
+            const options = sel.querySelectorAll('.tcs-option');
+            const hidden = sel.querySelector('input[type="hidden"]');
+            const textEl = trigger.querySelector('.tcs-text');
+            trigger.addEventListener('click', () => {
+                document.querySelectorAll('#addPlaylistModal .task-custom-select').forEach(s => { if(s!==sel) s.classList.remove('open'); });
+                sel.classList.toggle('open');
+            });
+            options.forEach(opt => { opt.addEventListener('click', () => {
+                options.forEach(o => o.classList.remove('selected')); opt.classList.add('selected');
+                textEl.textContent = opt.textContent; hidden.value = opt.getAttribute('data-value'); sel.classList.remove('open');
+                if(hidden.id==='plExamType'){ document.getElementById('plTrackGroup').style.display = hidden.value==='ayt'?'':'none'; plUpdateSubjects(); }
+                if(hidden.id==='plTrack') plUpdateSubjects();
+                if(hidden.id==='plSubject') plUpdateSubLessons(hidden.value);
+            }); });
+        });
+        window.addEventListener('click', e => {
+            document.querySelectorAll('#addPlaylistModal .task-custom-select').forEach(s => { if(!s.contains(e.target)) s.classList.remove('open'); });
+        });
+
+        function plUpdateSubjects(){
+            const type = document.getElementById('plExamType').value;
+            const track = document.getElementById('plTrack').value;
+            const container = document.getElementById('plDynamicSubjectOptions');
+            const textEl = document.querySelector('#tcs-plSubject .tcs-text');
+            const hidden = document.getElementById('plSubject');
+            container.innerHTML = ''; let subjects = [];
+            if(type==='tyt') subjects = ["Türkçe","Sosyal Bilimler","Temel Matematik","Fen Bilimleri"];
+            else if(type==='ayt'){ if(track==='sayisal') subjects=["Matematik","Fizik","Kimya","Biyoloji"]; else if(track==='ea') subjects=["Matematik","Türk Dili ve Edebiyatı","Tarih-1","Coğrafya-1"]; else if(track==='sozel') subjects=["Türk Dili ve Edebiyatı","Tarih-1","Coğrafya-1","Tarih-2","Coğrafya-2","Felsefe Grubu","Din Kültürü ve Ahlak Bilgisi"]; else if(track==='dil') subjects=["Yabancı Dil"]; }
+            subjects.forEach((s,i) => { container.innerHTML += `<div class="tcs-option ${i===0?'selected':''}" data-value="${s}">${s}</div>`; });
+            hidden.value = subjects[0]||''; textEl.textContent = subjects[0]||'Seçiniz';
+            container.querySelectorAll('.tcs-option').forEach(opt => { opt.addEventListener('click', () => {
+                container.querySelectorAll('.tcs-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected');
+                textEl.textContent = opt.textContent; hidden.value = opt.getAttribute('data-value');
+                document.getElementById('tcs-plSubject').classList.remove('open'); plUpdateSubLessons(hidden.value);
+            }); });
+            plUpdateSubLessons(subjects[0]||'');
+        }
+        window._plUpdateSubjects = plUpdateSubjects;
+
+        function plUpdateSubLessons(subject){
+            const group = document.getElementById('plSubLessonGroup');
+            const select = document.getElementById('plSubLesson');
+            if(!group||!select) return;
+            const opts = plSubLessonData[subject];
+            if(!opts){ group.style.display='none'; select.innerHTML=''; return; }
+            group.style.display=''; select.innerHTML = opts.map(o => `<option value="${o}">${o}</option>`).join(''); select.value = opts[0];
+        }
+        window._plUpdateSubLessons = plUpdateSubLessons;
+
+        let plTempData = null;
+
+        // Videoları Bul butonu
+        document.getElementById('plFetchBtn').addEventListener('click', async () => {
+            const link = document.getElementById('plLinkInput').value.trim();
+            const plId = plExtractId(link);
+            const tbody = document.getElementById('plVideoTableBody');
+            const btn = document.getElementById('plFetchBtn');
+            const saveBtn = document.getElementById('plConfirmSaveBtn');
+            if(!plId){ alert('Lütfen geçerli bir YouTube Playlist linki giriniz.'); return; }
+            const origHtml = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Aranıyor...'; btn.disabled = true; saveBtn.style.display = 'none';
+            tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-primary);"><i class="fa-solid fa-spinner fa-spin"></i> Videolar çekiliyor...</td></tr>';
+            let allItems=[], nextPage='';
+            try{
+                do{ const r=await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${plId}&key=${PL_YT_KEY}&pageToken=${nextPage}`); const d=await r.json(); if(d.items) allItems=allItems.concat(d.items); nextPage=d.nextPageToken||''; }while(nextPage);
+                let allVids=[];
+                for(let i=0;i<allItems.length;i+=50){ const ids=allItems.slice(i,i+50).map(x=>x.snippet.resourceId.videoId).join(','); const r=await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${ids}&key=${PL_YT_KEY}`); const d=await r.json(); if(d.items) allVids=allVids.concat(d.items); }
+                tbody.innerHTML=''; let count=0, totalSec=0, vids=[];
+                allItems.forEach(item => {
+                    const title=item.snippet.title; const vid=item.snippet.resourceId.videoId;
+                    const thumbs=item.snippet.thumbnails; const thumb=thumbs?.high?.url||thumbs?.medium?.url||thumbs?.default?.url||'';
+                    if(title==='Private video'||title==='Deleted video') return;
+                    const det=allVids.find(v=>v.id===vid); const raw=det?det.contentDetails.duration:'PT0S';
+                    const dur=plParseDur(raw); totalSec+=plParseSec(raw);
+                    vids.push({title,thumb,duration:dur,videoId:vid}); count++;
+                    const tr=document.createElement('tr');
+                    tr.innerHTML=`<td><div style="position:relative;display:inline-block;"><span style="position:absolute;top:-5px;left:-5px;background:var(--color-primary);color:white;width:18px;height:18px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:10px;font-weight:bold;border:1px solid white;">${count}</span><img src="${thumb}" alt="" style="width:70px;border-radius:4px;"></div></td><td style="line-height:1.4;">${title}</td><td style="color:var(--color-text-muted);font-weight:800;"><i class="fa-solid fa-clock"></i> ${dur}</td>`;
+                    tbody.appendChild(tr);
+                });
+                if(count>0){ saveBtn.style.display='block'; plTempData={id:Date.now(),link,videoCount:count,totalDuration:plFmtSec(totalSec),firstVideoThumb:allItems[0]?.snippet?.thumbnails?.medium?.url||'',videos:vids}; }
+                else tbody.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-danger);">Bu listede video bulunamadı.</td></tr>';
+            }catch(e){ tbody.innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-danger);">Hata oluştu. API veya linki kontrol edin.</td></tr>'; }
+            finally{ btn.innerHTML=origHtml; btn.disabled=false; }
+        });
+
+        // Listeyi Kaydet butonu
+        document.getElementById('plConfirmSaveBtn').addEventListener('click', async () => {
+            if(!plTempData) return;
+            const titleInput = document.getElementById('plTitleInput');
+            const title = titleInput.value.trim();
+            if(!title){ titleInput.style.borderColor='#d9534f'; setTimeout(()=>titleInput.style.borderColor='#dce4ec',2000); alert('Lütfen playliste isim veriniz.'); return; }
+            plTempData.customTitle = title;
+            const btn = document.getElementById('plConfirmSaveBtn');
+            const orig = btn.innerHTML; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Kaydediliyor...'; btn.disabled=true;
+            try{
+                plTempData.examType = document.getElementById('plExamType').value;
+                plTempData.track = plTempData.examType==='ayt' ? document.getElementById('plTrack').value : null;
+                const subj = document.getElementById('plSubject').value;
+                const sl = document.getElementById('plSubLesson'); const slVal = sl&&sl.value ? sl.value : '';
+                plTempData.subject = (slVal && slVal!=='Genel') ? slVal : subj;
+                plTempData.parentSubject = subj;
+                plTempData.subLesson = slVal || null;
+
+                // Hangi kullanıcının playlist'ine kaydediyoruz?
+                // Mentor planlayıcıda: öğrencinin | Normal sayfada: kendi
+                const targetUid = window._selectedStudentUid || window._currentUserUidForPlaylist;
+                if(!targetUid){ alert('Kaydetmek için giriş yapmalısınız.'); btn.innerHTML=orig; btn.disabled=false; return; }
+
+                // Firebase module scope'taki setDoc ve doc fonksiyonlarına erişim
+                if(window._playlistSaveFn){
+                    await window._playlistSaveFn(targetUid, plTempData);
+                }
+
+                // Local listeye ekle
+                if(window.savedPlaylists){ window.savedPlaylists.push(plTempData); }
+                addModal.style.display='none'; plTempData=null; titleInput.value='';
+
+                // Görev panelini güncelle (açıksa)
+                if(window.isReturningToTaskPlaylistSelector){
+                    window.isReturningToTaskPlaylistSelector = false;
+                    const sub = document.getElementById('taskSubject')?.value;
+                    if(window.renderPlaylistCardsForSelection) window.renderPlaylistCardsForSelection(true, sub);
+                }
+            }catch(e){ console.error("Playlist kaydedilemedi:", e); alert('Playlist kaydedilemedi: '+e.message); }
+            finally{ btn.innerHTML=orig; btn.disabled=false; }
+        });
+
+        // addNewPlaylistBtn tıklanınca modalı aç
+        const addNewBtn = document.getElementById('addNewPlaylistBtn');
+
+        // Seçicileri görev bilgisiyle doldur ve kilitle
+        function plSyncFromTask() {
+            const currentExamType = document.getElementById('taskExamType')?.value;
+            const currentTrack = document.getElementById('taskTrack')?.value;
+            const currentSubject = document.getElementById('taskSubject')?.value;
+            const currentSubLesson = document.getElementById('taskSubLesson')?.value;
+
+            const lockRow = document.getElementById('plSelectorsRow');
+
+            setTimeout(() => {
+                if(currentExamType){
+                    document.getElementById('plExamType').value = currentExamType;
+                    document.querySelector('#tcs-plExamType .tcs-text').textContent = currentExamType.toUpperCase();
+                    document.querySelectorAll('#tcs-plExamType .tcs-option').forEach(o => { o.classList.remove('selected'); if(o.getAttribute('data-value')===currentExamType) o.classList.add('selected'); });
+                    document.getElementById('plTrackGroup').style.display = currentExamType==='ayt'?'':'none';
+                    if(currentExamType==='ayt' && currentTrack){
+                        document.getElementById('plTrack').value = currentTrack;
+                        document.querySelectorAll('#tcs-plTrack .tcs-option').forEach(o => { o.classList.remove('selected'); if(o.getAttribute('data-value')===currentTrack) { o.classList.add('selected'); document.querySelector('#tcs-plTrack .tcs-text').textContent=o.textContent; } });
+                    }
+                    plUpdateSubjects();
+                }
+                if(currentSubject){
+                    setTimeout(() => {
+                        document.getElementById('plSubject').value = currentSubject;
+                        document.querySelectorAll('#tcs-plSubject .tcs-option').forEach(o => { o.classList.remove('selected'); if(o.getAttribute('data-value')===currentSubject) { o.classList.add('selected'); document.querySelector('#tcs-plSubject .tcs-text').textContent=o.textContent; } });
+                        plUpdateSubLessons(currentSubject);
+                        // Alt ders değerini de aktar
+                        if(currentSubLesson) {
+                            setTimeout(() => {
+                                const slSelect = document.getElementById('plSubLesson');
+                                if(slSelect) slSelect.value = currentSubLesson;
+                            }, 30);
+                        }
+                    }, 50);
+                }
+                // Seçicileri kilitle (görsel + işlevsel)
+                if(lockRow && currentExamType) {
+                    lockRow.style.pointerEvents = 'none';
+                    lockRow.style.opacity = '0.55';
+                    lockRow.style.filter = 'grayscale(0.3)';
+                }
+            }, 100);
+        }
+
+        // Kilidi aç (modal kapanınca)
+        function plUnlockSelectors() {
+            const lockRow = document.getElementById('plSelectorsRow');
+            if(lockRow) { lockRow.style.pointerEvents = ''; lockRow.style.opacity = ''; lockRow.style.filter = ''; }
+        }
+
+        if(addNewBtn){
+            addNewBtn.addEventListener('click', () => {
+                document.getElementById('plLinkInput').value='';
+                document.getElementById('plTitleInput').value='';
+                document.getElementById('plVideoTableBody').innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-text-light);">Link girip "Videoları Bul" butonuna basınız.</td></tr>';
+                document.getElementById('plConfirmSaveBtn').style.display='none';
+                addModal.style.display='flex';
+                plSyncFromTask();
+            });
+        }
+
+        // Modal kapanınca kilidi aç
+        document.getElementById('closeAddPlaylistModalBtn').onclick = () => { addModal.style.display='none'; plUnlockSelectors(); };
+        document.getElementById('plCancelBtn').onclick = () => { addModal.style.display='none'; plUnlockSelectors(); };
+
+        // openAddNewPlaylistAndReturn fonksiyonunu güncelle
+        const origOpenFn = window.openAddNewPlaylistAndReturn;
+        window.openAddNewPlaylistAndReturn = function(){
+            window.isReturningToTaskPlaylistSelector = true;
+
+            // Modalı aç
+            document.getElementById('plLinkInput').value='';
+            document.getElementById('plTitleInput').value='';
+            document.getElementById('plVideoTableBody').innerHTML='<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--color-text-light);">Link girip "Videoları Bul" butonuna basınız.</td></tr>';
+            document.getElementById('plConfirmSaveBtn').style.display='none';
+            addModal.style.display='flex';
+
+            plSyncFromTask();
+        };
+    })();
+    </script>
 
 </body>
 </html>
